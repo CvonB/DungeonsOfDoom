@@ -21,8 +21,26 @@ namespace DungeonsOfDoom
         public string Type { get; set; }
     }
 
+    //TODO: Titta på dessa två subclasser. 
+    //class Weapon : Item
+    //{
+    //    public Weapon() : base("Axe")
+    //    {
+
+    //    }
+    //}
+
+    //class Potion : Item
+    //{
+    //    public Potion() : base("Health Potion")
+    //    {
+
+    //    }
+    //}
+
+
     //TODO: Konvertera denna enum till en SubClass istället
-        enum Items 
+    enum Items 
         {
             Sword = 0,
             Axe = 1,
