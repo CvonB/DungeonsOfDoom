@@ -17,7 +17,8 @@
         void HasItem()
         {
             Item tmp;
-            int percentage = Random.Shared.Next(1, 100); // Redigeras så det funkar med random item!
+            //TODO: Redigera så det funkar med random item!
+            int percentage = Random.Shared.Next(1, 100); 
             if (percentage < 10)
                 Inventory.Add(new Item("Rare Item"));
             else if (percentage < 20)
