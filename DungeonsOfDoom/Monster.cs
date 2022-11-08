@@ -15,7 +15,7 @@
         public string Ascii { get; set; }
         public string Name { get; set; }
 
-        public ConsoleColor MonsterColor { get; set; }
+
 
         void HasItem() //Vi kanske kan göra så att RandomItem tar en enum som är rare,epic osv. - Christian
         {
@@ -36,7 +36,7 @@
     {
         public Skeleton() : base("Skeleton", 30)
         {
-            MonsterColor = ConsoleColor.Green;
+            EntityColor = ConsoleColor.Green;
             Ascii = "\t\t\t\t         _,.-------.,_\r\n\t\t\t\t     ,;~'             '~;,\r\n\t\t\t\t   ,;                     ;,\r\n\t\t\t\t  ;                         ;\r\n\t\t\t\t ,'                         ',\r\n\t\t\t\t,;                           ;,\r\n\t\t\t\t; ;      .           .      ; ;\r\n\t\t\t\t| ;   ______       ______   ; |\r\n\t\t\t\t|  `/~\"     ~\" . \"~     \"~\\'  |\r\n\t\t\t\t|  ~  ,-~~~^~, | ,~^~~~-,  ~  |\r\n\t\t\t\t |   |        }:{        |   |\r\n\t\t\t\t |   l       / | \\       !   |\r\n\t\t\t\t .~  (__,.--\" .^. \"--.,__)  ~.\r\n\t\t\t\t |     ---;' / | \\ `;---     |\r\n\t\t\t\t  \\__.       \\/^\\/       .__/\r\n\t\t\t\t   V| \\                 / |V\r\n\t\t\t\t    | |T~\\___!___!___/~T| |\r\n\t\t\t\t    | |`IIII_I_I_I_IIII'| |\r\n\t\t\t\t    |  \\,III I I I III,/  |\r\n\t\t\t\t     \\   `~~~~~~~~~~'    /\r\n\t\t\t\t       \\   .       .   /     \r\n\t\t\t\t         \\.    ^    ./\r\n\t\t\t\t           ^~~~^~~~^";
         }
 
@@ -45,7 +45,7 @@
     {
         public Ghost() : base("Ghost", 45)
         {
-            MonsterColor = ConsoleColor.Red;
+            EntityColor = ConsoleColor.Red;
             Ascii = "\t\t\t      .'``'.      ...\r\n\t\t\t     :o  o `....'`  ;\r\n\t\t\t     `. O         :'\r\n\t\t\t       `':          `.\r\n\t\t\t         `:.          `.\r\n\t\t\t          : `.         `.\r\n\t\t\t         `..'`...       `.\r\n\t\t\t                 `...     `.\r\n\t\t\t                     ``...  `.\r\n\t\t\t                          `````.";
         }
     }

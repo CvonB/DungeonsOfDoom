@@ -105,7 +105,7 @@
                         Console.Write("P");
                     else if (room.MonsterInRoom != null)
                     {
-                        Console.ForegroundColor = room.MonsterInRoom.MonsterColor;
+                        Console.ForegroundColor = room.MonsterInRoom.EntityColor;
                         Console.Write("M");
 
                         Console.ResetColor();
