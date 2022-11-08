@@ -19,7 +19,8 @@ namespace DungeonsOfDoom
         // Vi kan specifiera det i SubClassen annars - Christian
 
         //public bool Consumable => Type == "Consumable";
-        public string Type  => typeof(Item).Name; 
+        public string Type  => this.GetType().ToString().Split('.')[1];
+        public int Count;
     }
 
     class Weapon : Item
@@ -30,16 +31,16 @@ namespace DungeonsOfDoom
         }
     }
 
-    class Potion : Item
+    class Consumable : Item
     {
-        public Potion() : base("Health Potion")
+        public Consumable() : base("Health Potion")
         {
 
         }
     }
 
 
-    //TODO: Konvertera denna enum till en SubClass istället
+    //TODO: Konvertera denna enum till en SubClass istället. Redan gjort men lämnar för att visa
     enum Items 
         {
             Sword = 0,

@@ -66,9 +66,6 @@
         }
 
         //TODO: Titta gärna på denna metod. Den tar en random av de två Item Subclasserna
-
-
-
         public static Item RandomItem()
         {
             var rand = new Random().Next(0, tableOfItems.Length);
@@ -77,7 +74,7 @@
 
         private static Func<Item>[] tableOfItems =
         {
-            () => new Potion(),
+            () => new Consumable(),
             () => new Weapon()
         };
 
@@ -93,7 +90,7 @@
 
         private static Func<Monster>[] tableOfMonsters =
         {
-            () => new Zombie(),
+            () => new Ghost(),
             () => new Skeleton()
         };
 
@@ -130,7 +127,7 @@
             Console.WriteLine("Items: ");
             foreach (var item in player.Inventory)
             {
-                Console.Write($"{item.Name} ");
+                Console.WriteLine($"{item.Name} of type: {item.Type} ");
             }
         }
 
