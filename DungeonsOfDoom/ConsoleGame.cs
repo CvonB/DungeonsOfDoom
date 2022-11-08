@@ -58,7 +58,7 @@
                     else if (percentage < 20)
                         world[x, y].ItemInRoom = new Item();
                     //else if (percentage < 20)
-                         //world[x, y].ItemInRoom = RandomItem();
+                    //world[x, y].ItemInRoom = RandomItem();
                 }
             }
         }
@@ -66,14 +66,14 @@
         //TODO: Titta gärna på denna metod. Den tar en random av de två Item Subclasserna
         //private Item RandomItem()
         //{
-        //    var rand = new Random().Next(0,TableOfMethods.Length);
+        //    var rand = new Random().Next(0, TableOfMethods.Length);
         //    return TableOfMethods[rand]();
         //}
 
         //private static Func<Item>[] TableOfMethods =
         //{
-        //    () => new Food();
-        //    () => new Weapon();
+        //    () => new Potion(),
+        //    () => new Weapon()
         //};
 
         private void DisplayWorld()
