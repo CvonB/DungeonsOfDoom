@@ -21,7 +21,8 @@ namespace DungeonsOfDoom
         public string Type { get; set; }
     }
 
-        enum Items
+    //TODO: Konvertera denna enum till en SubClass istället
+        enum Items 
         {
             Sword = 0,
             Axe = 1,
