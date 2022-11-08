@@ -51,6 +51,8 @@
                     world[x, y] = new Room();
 
                     int percentage = Random.Shared.Next(1, 100);
+
+                    //TODO: Gör så att detta fungerar med SubClasser för Item och Monster
                     if (percentage < 10)
                         world[x, y].MonsterInRoom = new Monster("Skeleton", 30);
                     else if (percentage < 20)

@@ -2,7 +2,8 @@
 
 namespace DungeonsOfDoom
 {
-    class Item
+    //TODO: Konvertera Item till BaseClass och introducera minst 2 SubClasser
+    class Item//Jag anser att denna kan vara abstrakt -- Christian
     {
         public Item(string name)
         {
