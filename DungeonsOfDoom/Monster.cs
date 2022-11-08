@@ -2,7 +2,7 @@
 {
 
     //TODO: Konvertera Monster till BaseClass och introducera minst 2 SubClasser
-    class Monster //Jag anser att denna kan vara abstrakt -- Christian
+    class Monster : LivingEntity //Jag anser att denna kan vara abstrakt -- Christian
     {
         public Monster(string name, int health)
         {
@@ -12,9 +12,6 @@
         }
 
         public string Name { get; set; }
-        public int Health { get; set; }
-        public bool IsAlive { get { return Health > 0; } }
-        public List<Item> Inventory { get;} = new List<Item>();   
 
         void HasItem()
         {
@@ -27,5 +24,17 @@
                 Inventory.Add(new Item("Common Item"));
         }
 
+    }
+    class Skeleton : Monster
+    {
+        public Skeleton(string name, int health) : base(name, health)
+        {
+        }
+    }
+    class Zombie : Monster
+    {
+        public Zombie(string name, int health) : base(name, health)
+        {
+        }
     }
 }
