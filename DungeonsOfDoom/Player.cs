@@ -1,7 +1,7 @@
 ﻿namespace DungeonsOfDoom
 {
 
-    //TODO: Skapa BasKlass där spealare och monster är subklasser.
+
     class Player : LivingEntity
     {
         public Player(int health, int x, int y)
@@ -10,9 +10,6 @@
             X = x;
             Y = y;
         }
-
-        public int X { get; set; }
-        public int Y { get; set; }
 
     }
 }
