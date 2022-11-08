@@ -13,6 +13,8 @@
 
         public string Name { get; set; }
 
+        public ConsoleColor MonsterColor { get; set; }
+
         void HasItem()
         {
             Item tmp;

@@ -2,7 +2,6 @@
 
 namespace DungeonsOfDoom
 {
-    //TODO: Konvertera Item till BaseClass och introducera minst 2 SubClasser
     class Item//Jag anser att denna kan vara abstrakt -- Christian
     {
         public Item(string name)
@@ -16,10 +15,11 @@ namespace DungeonsOfDoom
             Name = ((Items)rand).ToString();
         }
 
-        public string Name { get; set; } //Item name kanske kan skapas av en metod som tar in rarity där det finns, ex "Epic Sword"?
+        public string Name { get; set; } //Item name kanske kan skapas av en metod som tar in rarity där det finns, ex "Epic Sword"? - Nima
+        // Vi kan specifiera det i SubClassen annars - Christian
 
         //public bool Consumable => Type == "Consumable";
-        //public string Type { get; set; }
+        public string Type  => typeof(Item).Name; 
     }
 
     class Weapon : Item

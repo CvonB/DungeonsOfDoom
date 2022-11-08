@@ -52,29 +52,40 @@
 
                     int percentage = Random.Shared.Next(1, 100);
 
-                    //TODO: Gör så att detta fungerar med SubClasser för Item och Monster
                     if (percentage < 10)
-                        world[x, y].MonsterInRoom = new Monster("Skeleton", 30);
+                        world[x, y].MonsterInRoom = RandomMonster();   //new Monster("Skeleton", 30);  //gammal
+                    //else if (percentage < 20)   //Gammla systemet
+                    //    world[x, y].ItemInRoom = new Item();
                     else if (percentage < 20)
-                        world[x, y].ItemInRoom = new Item();
-                    //else if (percentage < 20)
-                    //world[x, y].ItemInRoom = RandomItem();
+                        world[x, y].ItemInRoom = RandomItem(); // Generar random item
                 }
             }
         }
 
         //TODO: Titta gärna på denna metod. Den tar en random av de två Item Subclasserna
-        //private Item RandomItem()
-        //{
-        //    var rand = new Random().Next(0, TableOfMethods.Length);
-        //    return TableOfMethods[rand]();
-        //}
+        private Item RandomItem()
+        {
+            var rand = new Random().Next(0, tableOfItems.Length);
+            return tableOfItems[rand]();
+        }
 
-        //private static Func<Item>[] TableOfMethods =
-        //{
-        //    () => new Potion(),
-        //    () => new Weapon()
-        //};
+        private static Func<Item>[] tableOfItems =
+        {
+            () => new Potion(),
+            () => new Weapon()
+        };
+
+        private Monster RandomMonster()
+        {
+            var rand = new Random().Next(0, tableOfMonsters.Length);
+            return tableOfMonsters[rand]();
+        }
+
+        private static Func<Monster>[] tableOfMonsters =
+        {
+            () => new Zombie(),
+            () => new Skeleton()
+        };
 
         private void DisplayWorld()
         {
@@ -86,7 +97,10 @@
                     if (player.X == x && player.Y == y)
                         Console.Write("P");
                     else if (room.MonsterInRoom != null)
+                    {
+                        Console.ForegroundColor = room.MonsterInRoom.MonsterColor;
                         Console.Write("M");
+                    }
                     else if (room.ItemInRoom != null)
                         Console.Write("I");
                     else
