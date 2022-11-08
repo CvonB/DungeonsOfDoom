@@ -20,7 +20,7 @@ namespace DungeonsOfDoom
 
         //public bool Consumable => Type == "Consumable";
         public string Type  => this.GetType().ToString().Split('.')[1];
-        public int Count;
+        public int Count { get; set; }
     }
 
     class Weapon : Item
