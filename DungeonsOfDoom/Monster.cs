@@ -13,15 +13,15 @@
 
         public string Name { get; set; }
 
-        void HasItem()
+        public ConsoleColor MonsterColor { get; set; }
+
+        void HasItem() //Vi kanske kan göra så att RandomItem tar en enum som är rare,epic osv. - Christian
         {
-            Item tmp;
-            //TODO: Redigera så det funkar med random item!
-            int percentage = Random.Shared.Next(1, 100); 
-            if (percentage < 10)
-                Inventory.Add(new Item("Rare Item"));
-            else if (percentage < 20)
-                Inventory.Add(new Item("Common Item"));
+            int percentage = Random.Shared.Next(0, 100); 
+            if (percentage < 20)
+                Inventory.Add(ConsoleGame.RandomItem());
+            //else if (percentage < 20)
+            //    Inventory.Add(new Item("Common Item"));
         }
 
     }
@@ -32,12 +32,14 @@
     {
         public Skeleton() : base("Skeleton", 30)
         {
+            MonsterColor = ConsoleColor.Green;
         }
     }
     class Zombie : Monster
     {
         public Zombie() : base("Zombie", 45)
         {
+            MonsterColor = ConsoleColor.Red;
         }
     }
 }
