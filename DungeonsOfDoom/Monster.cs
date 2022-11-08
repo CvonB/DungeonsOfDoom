@@ -25,15 +25,18 @@
         }
 
     }
+    // Olika monsterklasser startar med olika Health värden.
+    // Skulle kunna lägga till saker som svaghet mot vissa typer av vapen,
+    // skala upp Items värde och antal beroende på monsterklassens styrka
     class Skeleton : Monster
     {
-        public Skeleton(string name, int health) : base(name, health)
+        public Skeleton() : base("Skeleton", 30)
         {
         }
     }
     class Zombie : Monster
     {
-        public Zombie(string name, int health) : base(name, health)
+        public Zombie() : base("Zombie", 45)
         {
         }
     }

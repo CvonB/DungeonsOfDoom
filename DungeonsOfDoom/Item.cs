@@ -21,14 +21,24 @@ namespace DungeonsOfDoom
         //public bool Consumable => Type == "Consumable";
         //public string Type { get; set; }
     }
-    class Consumable : Item
-    {
-        //Här kan man kanske lägga in egenskaper som t.ex. healvalue, plus metod för vad som händer när en consumable används.
-    }
-    class Weapon : Item
-    {
-        //Här kanske damage, weapon type, rarity etc. kan vara lämpliga egenskaper.
-    }
+
+    //TODO: Titta på dessa två subclasser. 
+    //class Weapon : Item
+    //{
+    //    public Weapon() : base("Axe")
+    //    {
+
+    //    }
+    //}
+
+    //class Potion : Item
+    //{
+    //    public Potion() : base("Health Potion")
+    //    {
+
+    //    }
+    //}
+
 
     //TODO: Konvertera denna enum till en SubClass istället
     enum Items 
