@@ -77,7 +77,7 @@
 
         private static Func<Item>[] tableOfItems =
         {
-            () => new Potion(),
+            () => new Consumable(),
             () => new Weapon()
         };
 
@@ -130,7 +130,7 @@
             Console.WriteLine("Items: ");
             foreach (var item in player.Inventory)
             {
-                Console.Write($"{item.Name} ");
+                Console.WriteLine($"{item.Name} of type: {item.Type} ");
             }
         }
 

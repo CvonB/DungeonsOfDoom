@@ -19,7 +19,7 @@ namespace DungeonsOfDoom
         // Vi kan specifiera det i SubClassen annars - Christian
 
         //public bool Consumable => Type == "Consumable";
-        public string Type  => typeof(Item).Name; 
+        public string Type  => this.GetType().ToString().Split('.')[1]; 
     }
 
     class Weapon : Item
@@ -30,9 +30,9 @@ namespace DungeonsOfDoom
         }
     }
 
-    class Potion : Item
+    class Consumable : Item
     {
-        public Potion() : base("Health Potion")
+        public Consumable() : base("Health Potion")
         {
 
         }
