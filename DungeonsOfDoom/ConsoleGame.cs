@@ -66,9 +66,6 @@
         }
 
         //TODO: Titta gärna på denna metod. Den tar en random av de två Item Subclasserna
-
-
-
         public static Item RandomItem()
         {
             var rand = new Random().Next(0, tableOfItems.Length);
@@ -93,7 +90,7 @@
 
         private static Func<Monster>[] tableOfMonsters =
         {
-            () => new Zombie(),
+            () => new Ghost(),
             () => new Skeleton()
         };
 
@@ -108,7 +105,7 @@
                         Console.Write("P");
                     else if (room.MonsterInRoom != null)
                     {
-                        Console.ForegroundColor = room.MonsterInRoom.MonsterColor;
+                        Console.ForegroundColor = room.MonsterInRoom.EntityColor;
                         Console.Write("M");
 
                         Console.ResetColor();

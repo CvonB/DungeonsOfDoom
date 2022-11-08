@@ -19,7 +19,8 @@ namespace DungeonsOfDoom
         // Vi kan specifiera det i SubClassen annars - Christian
 
         //public bool Consumable => Type == "Consumable";
-        public string Type => this.GetType().ToString().Split('.')[1];
+        public string Type  => this.GetType().ToString().Split('.')[1];
+        public int Count { get; set; }
     }
 
    //La till SubClasses för Weapon: Axe, Sword, Spear och gav dem förutom namn Power också. - Martin
@@ -71,14 +72,14 @@ namespace DungeonsOfDoom
     }
 
 
-    //TODO: Konvertera denna enum till en SubClass istället
-    enum Items
-    {
-        Sword = 0,
-        Axe = 1,
-        Spear = 2,
-        Pear = 3,
-        Apple = 4,
-    }
+    //TODO: Konvertera denna enum till en SubClass istället. Redan gjort men lämnar för att visa
+    enum Items 
+        {
+            Sword = 0,
+            Axe = 1,
+            Spear = 2,
+            Pear = 3,
+            Apple = 4,
+        }
 
 }
