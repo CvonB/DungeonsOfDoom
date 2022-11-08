@@ -53,7 +53,10 @@
                     int percentage = Random.Shared.Next(1, 100);
 
                     if (percentage < 10)
-                        world[x, y].MonsterInRoom = RandomMonster();   //new Monster("Skeleton", 30);  //gammal
+                    {
+                        world[x, y].MonsterInRoom = RandomMonster(x,y);   //new Monster("Skeleton", 30);  //gammal
+
+                    }
                     //else if (percentage < 20)   //Gammla systemet
                     //    world[x, y].ItemInRoom = new Item();
                     else if (percentage < 20)
@@ -78,14 +81,14 @@
             () => new Weapon()
         };
 
-
-
-
-        public static Monster RandomMonster()
+        public static Monster RandomMonster(int x, int y)
 
         {
             var rand = new Random().Next(0, tableOfMonsters.Length);
-            return tableOfMonsters[rand]();
+            Monster newMonster = tableOfMonsters[rand]();
+            newMonster.X = x;
+            newMonster.Y = y;
+            return newMonster;
         }
 
         private static Func<Monster>[] tableOfMonsters =
