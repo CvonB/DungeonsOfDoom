@@ -1,5 +1,7 @@
 ﻿namespace DungeonsOfDoom
 {
+
+    //TODO: Skapa BasKlass där spealare och monster är subklasser.
     class Player
     {
         public Player(int health, int x, int y)
