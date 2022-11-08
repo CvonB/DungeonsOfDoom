@@ -14,5 +14,7 @@ namespace DungeonsOfDoom
         public int X { get; set; }
         public int Y { get; set; }
 
+        public ConsoleColor EntityColor { get; set; }
+
     }
 }
