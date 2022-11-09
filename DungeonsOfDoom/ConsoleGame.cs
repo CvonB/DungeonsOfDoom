@@ -27,15 +27,15 @@ namespace DungeonsOfDoom
         private void EnterRoom()
         {
             Room room = world[player.X, player.Y];
-            if (room.ItemInRoom != null) //If there is an item in the room
+            if (room.ItemInRoom != null)
             {
                 Console.WriteLine($"You picked up {room.ItemInRoom.Name}");
-                Thread.Sleep( 1000 );
-                player.Inventory.Add(room.ItemInRoom); //Picks up item and adds to inventory of player.
-                room.ItemInRoom = null; //Removes item from the location.
+                Thread.Sleep(1000);
+                player.Inventory.Add(room.ItemInRoom);
+                room.ItemInRoom = null;
                 StackItem(player.Inventory);
             }
-            else if (room.MonsterInRoom != null) //If there is a monster in the room
+            else if (room.MonsterInRoom != null)
             {
                 Monster enemy = room.MonsterInRoom;
                 Console.WriteLine($"You have encountered {enemy.Type}");
@@ -50,10 +50,8 @@ namespace DungeonsOfDoom
                         room.MonsterInRoom = null;
                     }
                 }
-
             }
         }
-
         private void Flee()
         {
             int x = player.X;
@@ -126,18 +124,15 @@ namespace DungeonsOfDoom
 
                     if (percentage < 10 && notOnPlayer != 0)
                     {
-                        world[x, y].MonsterInRoom = RandomMonster(x, y);   //new Monster("Skeleton", 30);  //gammal
+                        world[x, y].MonsterInRoom = RandomMonster(x, y);
 
                     }
-                    //else if (percentage < 20)   //Gammla systemet
-                    //    world[x, y].ItemInRoom = new Item();
                     else if (percentage < 20 && notOnPlayer != 0)
-                        world[x, y].ItemInRoom = RandomItem(); // Generar random item
+                        world[x, y].ItemInRoom = RandomItem();
                     notOnPlayer++;
                 }
             }
         }
-
         #endregion
 
         #region RandomGen
@@ -189,15 +184,12 @@ namespace DungeonsOfDoom
                         Console.ForegroundColor = player.EntityColor;
                         Console.Write("P");
                         Console.ResetColor();
-
                     }
                     else if (room.MonsterInRoom != null)
                     {
                         Console.ForegroundColor = room.MonsterInRoom.EntityColor;
                         Console.Write("M");
                         Console.ResetColor();
-
-
                     }
                     else if (room.ItemInRoom != null)
                         Console.Write("I");
@@ -212,9 +204,7 @@ namespace DungeonsOfDoom
         {
             Console.WriteLine($"Health: {player.Health}");
             Console.WriteLine("[I]nventory:");
-
         }
-
 
         private void Inventory(List<Item> inventory)
         {
@@ -286,8 +276,6 @@ namespace DungeonsOfDoom
             }
             Console.WriteLine("move along...");
             Console.ReadKey();
-
         }
-
     }
 }

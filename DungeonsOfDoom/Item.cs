@@ -33,13 +33,12 @@ namespace DungeonsOfDoom
         public Weapon(string weaponType, int power) : base(weaponType)
         {
             Power = power;
-            
-            
         }
         // if Armor = StrongAgainst > Damage = 1.5 else Damage 1
         // rand 0-100.
         // if (crit > rand) Damage *= 2
         // Health - power*Damage
+
         public ArmorTypes StrongAgainst { get; set; }
     }
 

@@ -17,8 +17,6 @@ namespace DungeonsOfDoom
         public int Power { get; set; }
         public string Name { get; set; }
 
-
-
         public int Attack(LivingEntity opponent)
         {
             int damage = Power;
@@ -26,7 +24,6 @@ namespace DungeonsOfDoom
                 opponent.Health -= damage;
             return damage;
         }
-
     }
 
     enum ArmorTypes
