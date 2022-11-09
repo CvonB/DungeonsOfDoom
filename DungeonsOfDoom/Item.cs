@@ -2,7 +2,7 @@
 
 namespace DungeonsOfDoom
 {
-    class Item//Jag anser att denna kan vara abstrakt -- Christian
+    abstract class Item//Jag anser att denna kan vara abstrakt -- Christian
     {
         public Item(string name)
         {
@@ -10,9 +10,7 @@ namespace DungeonsOfDoom
         }
         public Item()
         {
-            var namesCount = Enum.GetNames(typeof(Items)).Length;
-            int rand = new Random().Next(0, namesCount);
-            Name = ((Items)rand).ToString();
+
         }
 
         public string Name { get; set; } //Item name kanske kan skapas av en metod som tar in rarity där det finns, ex "Epic Sword"? - Nima
@@ -23,8 +21,8 @@ namespace DungeonsOfDoom
         public int Count { get; set; }
     }
 
-   //La till SubClasses för Weapon: Axe, Sword, Spear och gav dem förutom namn Power också. - Martin
-    class Weapon : Item
+    //La till SubClasses för Weapon: Axe, Sword, Spear och gav dem förutom namn Power också. - Martin
+    abstract class Weapon : Item
     {
         public Weapon(string weaponType, int power) : base(weaponType)
         {
@@ -67,14 +65,5 @@ namespace DungeonsOfDoom
     }
 
 
-    //TODO: Konvertera denna enum till en SubClass istället. Redan gjort men lämnar för att visa
-    enum Items 
-        {
-            Sword = 0,
-            Axe = 1,
-            Spear = 2,
-            Pear = 3,
-            Apple = 4,
-        }
-
+   
 }

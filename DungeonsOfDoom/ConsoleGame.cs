@@ -75,7 +75,9 @@
         private static Func<Item>[] tableOfItems =
         {
             () => new Consumable(),
-            () => new Weapon()
+            () => new Axe(),
+            () => new Sword(),
+            () => new Spear()
         };
 
         public static Monster RandomMonster(int x, int y)
