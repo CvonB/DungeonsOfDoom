@@ -2,7 +2,7 @@
 
 namespace DungeonsOfDoom
 {
-    abstract class Item//Jag anser att denna kan vara abstrakt -- Christian
+    abstract class Item
     {
         public Item(string name)
         {
@@ -16,8 +16,7 @@ namespace DungeonsOfDoom
             Rare = rare;
         }
 
-        public string Name { get; set; } //Item name kanske kan skapas av en metod som tar in rarity där det finns, ex "Epic Sword"? - Nima
-        // Vi kan specifiera det i SubClassen annars - Christian
+        public string Name { get; set; } 
 
         //public bool Consumable => Type == "Consumable";
         public string Type  => this.GetType().ToString().Split('.')[1];
@@ -26,7 +25,6 @@ namespace DungeonsOfDoom
         public Rarity Rare { get; set; }
     }
 
-    //La till SubClasses för Weapon: Axe, Sword, Spear och gav dem förutom namn Power också. - Martin
     abstract class Weapon : Item
     {
 
