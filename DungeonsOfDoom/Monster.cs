@@ -30,6 +30,7 @@
 
 
 
+
         void HasItem() //Vi kanske kan göra så att RandomItem tar en enum som är rare,epic osv. - Christian
         {
             int percentage = Random.Shared.Next(0, 100);
