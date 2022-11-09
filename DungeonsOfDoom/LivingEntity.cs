@@ -35,10 +35,14 @@ namespace DungeonsOfDoom
         Light = 1,
         Medium = 2,
         Heavy = 3,
+        Etheral = 4,
     }
     enum Rarity
     {
         Common = 0,
-        Rare = 1,
+        Uncommon = 1,
+        Rare = 2,
+        Epic = 3,
+        Legendary = 4,
     }
 }
