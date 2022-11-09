@@ -18,17 +18,25 @@ namespace DungeonsOfDoom
 
         //public bool Consumable => Type == "Consumable";
         public string Type  => this.GetType().ToString().Split('.')[1];
-        public int Count { get; set; }
+        public int Count { get; set; } = 1;
+
+        
     }
 
     //La till SubClasses för Weapon: Axe, Sword, Spear och gav dem förutom namn Power också. - Martin
     abstract class Weapon : Item
     {
+
         public Weapon(string weaponType, int power) : base(weaponType)
         {
             Power = power;
+            
         }
-
+        // if Armor = StrongAgainst > Damage = 1.5 else Damage 1
+        // rand 0-100.
+        // if (crit > rand) Damage *= 2
+        // Health - power*Damage
+        public ArmorTypes StrongAgainst { get; set; }
         public int Power { get; set; }
     }
 
@@ -36,7 +44,7 @@ namespace DungeonsOfDoom
     {
         public Sword() : base("Sword", 20)
         {
-
+            StrongAgainst = ArmorTypes.Unarmored;
         }
     }
 

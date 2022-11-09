@@ -2,7 +2,7 @@
 {
 
 
-    class Monster : LivingEntity //Jag anser att denna kan vara abstrakt -- Christian
+    abstract class Monster : LivingEntity //Jag anser att denna kan vara abstrakt -- Christian
     {
         public Monster(string name, int health)
         {
@@ -36,7 +36,7 @@
     {
         public Skeleton() : base("Skeleton", 30)
         {
-            EntityColor = ConsoleColor.Green;
+            EntityColor = ConsoleColor.DarkYellow;
             Ascii = "\t\t\t\t         _,.-------.,_\r\n\t\t\t\t     ,;~'             '~;,\r\n\t\t\t\t   ,;                     ;,\r\n\t\t\t\t  ;                         ;\r\n\t\t\t\t ,'                         ',\r\n\t\t\t\t,;                           ;,\r\n\t\t\t\t; ;      .           .      ; ;\r\n\t\t\t\t| ;   ______       ______   ; |\r\n\t\t\t\t|  `/~\"     ~\" . \"~     \"~\\'  |\r\n\t\t\t\t|  ~  ,-~~~^~, | ,~^~~~-,  ~  |\r\n\t\t\t\t |   |        }:{        |   |\r\n\t\t\t\t |   l       / | \\       !   |\r\n\t\t\t\t .~  (__,.--\" .^. \"--.,__)  ~.\r\n\t\t\t\t |     ---;' / | \\ `;---     |\r\n\t\t\t\t  \\__.       \\/^\\/       .__/\r\n\t\t\t\t   V| \\                 / |V\r\n\t\t\t\t    | |T~\\___!___!___/~T| |\r\n\t\t\t\t    | |`IIII_I_I_I_IIII'| |\r\n\t\t\t\t    |  \\,III I I I III,/  |\r\n\t\t\t\t     \\   `~~~~~~~~~~'    /\r\n\t\t\t\t       \\   .       .   /     \r\n\t\t\t\t         \\.    ^    ./\r\n\t\t\t\t           ^~~~^~~~^";
         }
 

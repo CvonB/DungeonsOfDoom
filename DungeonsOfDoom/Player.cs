@@ -4,11 +4,12 @@
 
     class Player : LivingEntity
     {
-        public Player(int health, int x, int y)
+        public Player()
         {
-            Health = health;
-            X = x;
-            Y = y;
+            Health = 30;
+            X = 0;
+            Y = 0;
+            EntityColor = ConsoleColor.Green;
         }
 
     }

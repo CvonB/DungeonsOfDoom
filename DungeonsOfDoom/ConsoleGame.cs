@@ -28,17 +28,41 @@
             {
                 player.Inventory.Add(room.ItemInRoom); //Picks up item and adds to inventory of player.
                 room.ItemInRoom = null; //Removes item from the location.
+                StackItem(player.Inventory);
             }
             else if (room.MonsterInRoom != null) //If there is a monster in the room
             {
                 player.Inventory.AddRange(room.MonsterInRoom.Inventory);
                 room.MonsterInRoom = null;
+                StackItem(player.Inventory);
+            }
+        }
+
+        private void StackItem(List<Item> inventory)
+        {
+
+            Item tmpItem = null;
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                int j = 0;
+                var tmpList = inventory.Where(x => x.Name.Equals(inventory[i].Name)).Where(x => x.Type.Equals(inventory[i].Type)).ToList();
+                foreach (var item in tmpList)
+                {
+                    if (j++ > 0)
+                    {
+                        inventory.Remove(item);
+                        tmpItem.Count++;
+                    }
+                    else
+                        tmpItem = item;
+
+                }
             }
         }
 
         private void CreatePlayer()
         {
-            player = new Player(30, 0, 0);
+            player = new Player();
         }
 
         private void CreateWorld()
@@ -89,6 +113,8 @@
             Monster newMonster = tableOfMonsters[rand]();
             newMonster.X = x;
             newMonster.Y = y;
+            rand = new Random().Next(-3, 3);
+            newMonster.Health += rand;
             return newMonster;
         }
 
@@ -106,12 +132,16 @@
                 {
                     Room room = world[x, y];
                     if (player.X == x && player.Y == y)
+                    {
+                        Console.ForegroundColor = player.EntityColor;
                         Console.Write("P");
+                        Console.ResetColor();
+
+                    }
                     else if (room.MonsterInRoom != null)
                     {
                         Console.ForegroundColor = room.MonsterInRoom.EntityColor;
                         Console.Write("M");
-
                         Console.ResetColor();
 
 
@@ -131,7 +161,7 @@
             Console.WriteLine("Items: ");
             foreach (var item in player.Inventory)
             {
-                Console.WriteLine($"{item.Name} of type: {item.Type} ");
+                Console.WriteLine($"{item.Name} of type: {item.Type} {item.Count} ");
             }
         }
 
