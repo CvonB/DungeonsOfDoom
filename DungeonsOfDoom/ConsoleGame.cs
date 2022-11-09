@@ -1,4 +1,6 @@
-﻿namespace DungeonsOfDoom
+﻿using System.Runtime.InteropServices;
+
+namespace DungeonsOfDoom
 {
     class ConsoleGame
     {
@@ -13,9 +15,10 @@
             do
             {
                 Console.Clear();
+                EnterRoom();
+                Console.Clear();
                 DisplayWorld();
                 DisplayStats();
-                EnterRoom();
                 AskForMovement();
             } while (player.IsAlive);
             GameOver();
@@ -26,6 +29,8 @@
             Room room = world[player.X, player.Y];
             if (room.ItemInRoom != null) //If there is an item in the room
             {
+                Console.WriteLine($"You picked up {room.ItemInRoom.Name}");
+                Thread.Sleep( 1000 );
                 player.Inventory.Add(room.ItemInRoom); //Picks up item and adds to inventory of player.
                 room.ItemInRoom = null; //Removes item from the location.
                 StackItem(player.Inventory);
@@ -33,15 +38,48 @@
             else if (room.MonsterInRoom != null) //If there is a monster in the room
             {
                 Monster enemy = room.MonsterInRoom;
-                Combat(player, enemy);
-                if (!room.MonsterInRoom.IsAlive)
+                Console.WriteLine($"You have encountered {enemy.Type}");
+                Console.WriteLine($"Press any key to attack (or [R]un if you are scared)");
+                if (Console.ReadKey(true).Key == ConsoleKey.R)
+                    Flee();
+                else
                 {
-                    player.Inventory.AddRange(enemy.Inventory);
-                    enemy = null;
-                    StackItem(player.Inventory);
+                    Combat(player, enemy);
+                    if (!enemy.IsAlive)
+                    {
+                        room.MonsterInRoom = null;
+                    }
                 }
-                Console.ReadKey();
+
             }
+        }
+
+        private void Flee()
+        {
+            int x = player.X;
+            int y = player.Y;
+            do
+            {
+                player.X = x; player.Y = y;
+                switch (Random.Shared.Next(0, 4))
+                {
+                    case 0:
+                        player.X++;
+                        break;
+                    case 1:
+                        player.X--;
+                        break;
+                    case 2:
+                        player.Y++;
+                        break;
+                    case 3:
+                        player.Y--;
+                        break;
+
+                }
+
+            } while (!(player.X >= 0 && player.X < world.GetLength(0) &&
+                    player.Y >= 0 && player.Y < world.GetLength(1)));
         }
 
         private void StackItem(List<Item> inventory)
@@ -183,7 +221,7 @@
             Console.Clear();
             foreach (var item in inventory)
             {
-                string tmp ="";
+                string tmp = "";
                 if (item.Stackable)
                     tmp = $"{item.Power} Health {item.Count}x";
                 else
@@ -203,7 +241,7 @@
             Console.ReadKey();
             Play();
         }
-#endregion
+        #endregion
         private void AskForMovement()
         {
             bool isValidKey = false;
@@ -232,13 +270,23 @@
             } while (!isValidKey);
         }
 
-        public void Combat(LivingEntity attacker, LivingEntity opponent)
+        public void Combat(LivingEntity player, LivingEntity monster)
         {
-            Console.WriteLine($"You damaged {opponent.Name} for {attacker.Attack(opponent)} damage.");
-            if (opponent.IsAlive)
+            Console.WriteLine($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
+            if (monster.IsAlive)
             {
-                Console.WriteLine($"{opponent.Name} damaged you for {opponent.Attack(attacker)} damage.");
+                Console.Write($" {monster.Name} has {monster.Health} health remaining.");
+                Console.WriteLine($"{monster.Name} damaged you for {monster.Attack(player)} damage.");
             }
+            else
+            {
+                Console.WriteLine($"You killed {monster.Name}. Grab you loot!");
+                player.Inventory.AddRange(monster.Inventory);
+                StackItem(player.Inventory);
+            }
+            Console.WriteLine("move along...");
+            Console.ReadKey();
+
         }
 
     }
