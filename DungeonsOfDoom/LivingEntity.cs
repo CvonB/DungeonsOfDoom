@@ -14,15 +14,22 @@ namespace DungeonsOfDoom
         public int X { get; set; }
         public int Y { get; set; }
         public ConsoleColor EntityColor { get; set; }
-        public int Power { get; set; }
+        public int Power => EquipedWeapon.Power;
         public string Name { get; set; }
+        public int CritChance { get; set; }
+        public Weapon EquipedWeapon { get; set; }
+        public ArmorTypes EquipedArmor { get; set; }
 
         public int Attack(LivingEntity opponent)
         {
-            int damage = Power;
+            double damage = Power; //Double för att kunna utföra matematiska beräkningar
+            if (EquipedWeapon.StrongAgainst == opponent.EquipedArmor)
+                damage *= 1.5;
+            if(Random.Shared.Next(0,100) < CritChance)
+                damage *= 2;
             if (IsAlive)
-                opponent.Health -= damage;
-            return damage;
+                opponent.Health -= (int)Math.Round(damage); //konvererar sedan tillbaka till en int
+            return (int)Math.Round(damage);
         }
     }
 
@@ -33,6 +40,7 @@ namespace DungeonsOfDoom
         Medium = 2,
         Heavy = 3,
         Etheral = 4,
+        Nothing = 5,
     }
     enum Rarity
     {

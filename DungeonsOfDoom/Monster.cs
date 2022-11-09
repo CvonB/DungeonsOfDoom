@@ -8,7 +8,7 @@
             Health = health;
             HasItem();
             Rare = Rarity.Common;
-            Power = 1;
+            EquipedWeapon= new Unarmored();
         }
 
         public Monster(string name, int health, Rarity rare)
@@ -53,7 +53,7 @@
     {
         public Ghost() : base("Ghost", 45)
         {
-            Power = 15;
+            EquipedWeapon = new Unarmored(15);
             EntityColor = ConsoleColor.Red;
             Ascii = "\t\t\t      .'``'.      ...\r\n\t\t\t     :o  o `....'`  ;\r\n\t\t\t     `. O         :'\r\n\t\t\t       `':          `.\r\n\t\t\t         `:.          `.\r\n\t\t\t          : `.         `.\r\n\t\t\t         `..'`...       `.\r\n\t\t\t                 `...     `.\r\n\t\t\t                     ``...  `.\r\n\t\t\t                          `````.";
         }
@@ -74,6 +74,7 @@
 
         public Zombie() : base("Zombie", 20)
         {
+            EquipedWeapon = new Axe(15);
             EntityColor = ConsoleColor.Cyan;
         }
     }
