@@ -1,7 +1,5 @@
 ﻿namespace DungeonsOfDoom
 {
-
-
     class Player : LivingEntity
     {
         public Player()

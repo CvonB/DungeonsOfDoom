@@ -1,8 +1,6 @@
 ﻿namespace DungeonsOfDoom
 {
-
-
-    abstract class Monster : LivingEntity //Jag anser att denna kan vara abstrakt -- Christian
+    abstract class Monster : LivingEntity
     {
         public Monster(string name, int health)
         {
@@ -26,10 +24,6 @@
         public string Ascii { get; set; }
 
         public string Type => this.GetType().ToString().Split('.')[1];
-
-
-
-
 
         void HasItem() //Vi kanske kan göra så att RandomItem tar en enum som är rare,epic osv. - Christian
         {
