@@ -48,15 +48,15 @@ namespace DungeonsOfDoom
     }
 
     
-    class Unarmored : Weapon
+    class Unarmed : Weapon
     {
-        public Unarmored() : base("Your fists", 10)
+        public Unarmed() : base("Your fists", 10)
         {
 
             StrongAgainst = ArmorTypes.Nothing;
         }
 
-        public Unarmored(int power) : base("Your fists", power)
+        public Unarmed(int power) : base("Your fists", power)
         {
             StrongAgainst = ArmorTypes.Nothing;
 
@@ -106,17 +106,23 @@ namespace DungeonsOfDoom
     {
         public Armor(string armorName, ArmorTypes type) : base(armorName)
         {
-            Power = 1;
+            Power = 0;
             ArmorType = type;
         }
 
         public ArmorTypes ArmorType { get; set; }
     }
 
+    class Unarmored : Armor    {
+        public Unarmored() : base("Heavy Mail", ArmorTypes.Unarmored)
+        {
+
+        }
+    }
     class HeavyMail : Armor    {
         public HeavyMail() : base("Heavy Mail", ArmorTypes.Heavy)
         {
-
+            Power = 3;
         }
     }
     #endregion

@@ -18,12 +18,12 @@ namespace DungeonsOfDoom
         public string Name { get; set; }
         public int CritChance { get; set; }
         public Weapon EquipedWeapon { get; set; }
-        public ArmorTypes EquipedArmor { get; set; }
+        public Armor EquipedArmor { get; set; }
 
         public int Attack(LivingEntity opponent)
         {
-            double damage = Power; //Double för att kunna utföra matematiska beräkningar
-            if (EquipedWeapon.StrongAgainst == opponent.EquipedArmor)
+            double damage = Power - opponent.EquipedArmor.Power; //Double för att kunna utföra matematiska beräkningar
+            if (EquipedWeapon.StrongAgainst == opponent.EquipedArmor.ArmorType)
                 damage *= 1.5;
             if(Random.Shared.Next(0,100) < CritChance)
                 damage *= 2;
