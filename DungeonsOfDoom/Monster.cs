@@ -9,8 +9,18 @@
             Name = name;
             Health = health;
             HasItem();
+            Rare = Rarity.Common;
         }
 
+        public Monster(string name, int health, Rarity rare)
+        {
+            Name = name;
+            Health = health;
+            HasItem();
+            Rare = rare;
+        }
+
+        public Rarity Rare { get; set; }
 
         public string Ascii { get; set; }
         public string Name { get; set; }
@@ -19,7 +29,7 @@
 
         void HasItem() //Vi kanske kan göra så att RandomItem tar en enum som är rare,epic osv. - Christian
         {
-            int percentage = Random.Shared.Next(0, 100); 
+            int percentage = Random.Shared.Next(0, 100);
             if (percentage < 20)
                 Inventory.Add(ConsoleGame.RandomItem());
             //else if (percentage < 20)
@@ -47,6 +57,25 @@
         {
             EntityColor = ConsoleColor.Red;
             Ascii = "\t\t\t      .'``'.      ...\r\n\t\t\t     :o  o `....'`  ;\r\n\t\t\t     `. O         :'\r\n\t\t\t       `':          `.\r\n\t\t\t         `:.          `.\r\n\t\t\t          : `.         `.\r\n\t\t\t         `..'`...       `.\r\n\t\t\t                 `...     `.\r\n\t\t\t                     ``...  `.\r\n\t\t\t                          `````.";
+        }
+    }
+    class Beast : Monster
+    {
+        public Beast() : base("Beast", 15)
+        {
+            EntityColor = ConsoleColor.Magenta;
+        }
+    }
+    class Zombie : Monster
+    {
+        public Zombie(int health, Rarity rarity) : base("Zombie", health, rarity)
+        {
+            EntityColor = ConsoleColor.Cyan;
+        }
+
+        public Zombie() : base("Zombie", 20)
+        {
+            EntityColor = ConsoleColor.Cyan;
         }
     }
 }

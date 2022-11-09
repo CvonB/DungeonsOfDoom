@@ -21,5 +21,12 @@ namespace DungeonsOfDoom
     {
         Unarmored = 0,
         Light = 1,
+        Medium = 2,
+        Heavy = 3,
+    }
+    enum Rarity
+    {
+        Common = 0,
+        Rare = 1,
     }
 }

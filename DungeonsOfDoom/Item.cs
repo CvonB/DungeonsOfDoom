@@ -7,10 +7,13 @@ namespace DungeonsOfDoom
         public Item(string name)
         {
             Name = name;
+            Rare = Rarity.Common;
         }
-        public Item()
-        {
 
+        public Item(string name, Rarity rare)
+        {
+            Name = name;
+            Rare = rare;
         }
 
         public string Name { get; set; } //Item name kanske kan skapas av en metod som tar in rarity där det finns, ex "Epic Sword"? - Nima
@@ -20,7 +23,7 @@ namespace DungeonsOfDoom
         public string Type  => this.GetType().ToString().Split('.')[1];
         public int Count { get; set; } = 1;
 
-        
+        public Rarity Rare { get; set; }
     }
 
     //La till SubClasses för Weapon: Axe, Sword, Spear och gav dem förutom namn Power också. - Martin
