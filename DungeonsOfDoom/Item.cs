@@ -26,11 +26,6 @@ namespace DungeonsOfDoom
    //La till SubClasses för Weapon: Axe, Sword, Spear och gav dem förutom namn Power också. - Martin
     class Weapon : Item
     {
-        public Weapon() : base("Axe")
-        {
-
-        }
-
         public Weapon(string weaponType, int power) : base(weaponType)
         {
             Power = power;
