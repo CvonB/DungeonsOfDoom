@@ -19,11 +19,24 @@ namespace DungeonsOfDoom
         public string Name { get; set; } 
 
         //public bool Consumable => Type == "Consumable";
+        /// <summary>
+        /// Returns SubClass to string.
+        /// </summary>
         public string Type  => this.GetType().ToString().Split('.')[1];
+        /// <summary>
+        /// Returns how many of said Item is in Inventory. Only applicable if Stackable == true.
+        /// </summary>
         public int Count { get; set; } = 1;
 
         public Rarity Rare { get; set; }
+        /// <summary>
+        /// Allows item to be stacked on top of each other.
+        /// </summary>
         public bool Stackable { get; set; }
+        /// <summary>
+        /// Returns the power of the Item. If weapon, will deal said amount as damage. If armor, will remove said amount from damage
+        /// If consumable, will affect player by said amount. Ex heal player by power.
+        /// </summary>
         public int Power { get; set; }
     }
     #region Weapons

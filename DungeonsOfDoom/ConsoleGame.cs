@@ -24,6 +24,11 @@ namespace DungeonsOfDoom
             GameOver();
         }
 
+        /// <summary>
+        /// Checks whether the room that the player is located in includes either an item or monster. 
+        /// If item the player will loot the item and it will be added to player.inventory.
+        /// If moonster the player can either start combat with monster (Method: Combat) or run away (Method: Flee)
+        /// </summary>
         private void EnterRoom()
         {
             Room room = world[player.X, player.Y];
@@ -52,6 +57,10 @@ namespace DungeonsOfDoom
                 }
             }
         }
+
+        /// <summary>
+        /// Moves the player to a random walkable spot, offset by players current location by 1.
+        /// </summary>
         private void Flee()
         {
             int x = player.X;
@@ -80,6 +89,10 @@ namespace DungeonsOfDoom
                     player.Y >= 0 && player.Y < world.GetLength(1)));
         }
 
+        /// <summary>
+        /// Takes player inventory and for each stackable item it will remove duplicates and add to the first instance's count.
+        /// </summary>
+        /// <param name="inventory"></param>
         private void StackItem(List<Item> inventory)
         {
 
@@ -105,11 +118,17 @@ namespace DungeonsOfDoom
         }
 
         #region Creation
+        /// <summary>
+        /// Creates new player instance.
+        /// </summary>
         private void CreatePlayer()
         {
             player = new Player();
         }
 
+        /// <summary>
+        /// Creates new Room array for field: world. Populates world with random monsters and random items at random X and Y value.
+        /// </summary>
         private void CreateWorld()
         {
             int notOnPlayer = 0;
@@ -136,12 +155,20 @@ namespace DungeonsOfDoom
         #endregion
 
         #region RandomGen
+
+        /// <summary>
+        /// Creates random int between 0 and func: tableOfItems length. Then calls func:tableOfItems and manipulates returned item instance. 
+        /// </summary>
+        /// <returns></returns>
         public static Item RandomItem()
         {
             var rand = new Random().Next(0, tableOfItems.Length);
             return tableOfItems[rand]();
         }
 
+        /// <summary>
+        /// Returns a new Item instance by given index.
+        /// </summary>
         private static Func<Item>[] tableOfItems =
         {
             () => new Consumable(),
@@ -150,6 +177,10 @@ namespace DungeonsOfDoom
             () => new Spear()
         };
 
+        /// <summary>
+        /// Creates random int between 0 and func: tableOfMonster length. Then calls func:tableOfMonster and manipulates returned Monster instance. 
+        /// </summary>
+        /// <returns></returns>
         public static Monster RandomMonster(int x, int y)
 
         {
@@ -162,6 +193,9 @@ namespace DungeonsOfDoom
             return newMonster;
         }
 
+        /// <summary>
+        /// Returns a new Monster instance by given index.
+        /// </summary>
         private static Func<Monster>[] tableOfMonsters =
         {
             () => new Ghost(),
@@ -172,6 +206,9 @@ namespace DungeonsOfDoom
         #endregion
 
         #region Display
+        /// <summary>
+        /// Prints world[] in the console.
+        /// </summary>
         private void DisplayWorld()
         {
             for (int y = 0; y < world.GetLength(1); y++)
@@ -200,12 +237,19 @@ namespace DungeonsOfDoom
             }
         }
 
+        /// <summary>
+        /// Displays player.Health and player stats
+        /// </summary>
         private void DisplayStats()
         {
             Console.WriteLine($"Health: {player.Health}");
             Console.WriteLine("[I]nventory:");
         }
 
+        /// <summary>
+        /// Displays all items in player.Inventory and allows user to interact with inventory.
+        /// </summary>
+        /// <param name="inventory"></param>
         private void Inventory(List<Item> inventory)
         {
             Console.Clear();
@@ -224,6 +268,9 @@ namespace DungeonsOfDoom
             DisplayStats();
         }
 
+        /// <summary>
+        /// Displays "Game over" in console and lets player restart.
+        /// </summary>
         private void GameOver()
         {
             Console.Clear();
@@ -232,6 +279,9 @@ namespace DungeonsOfDoom
             Play();
         }
         #endregion
+        /// <summary>
+        /// Waits for the player to input an arrowkey to move or press I to open inventory
+        /// </summary>
         private void AskForMovement()
         {
             bool isValidKey = false;
@@ -260,6 +310,11 @@ namespace DungeonsOfDoom
             } while (!isValidKey);
         }
 
+        /// <summary>
+        /// Makes player attack monster. If monster lives it will then attack back, else monsters inventory will be moved to players inventory.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="monster"></param>
         public void Combat(LivingEntity player, LivingEntity monster)
         {
             Console.WriteLine($"You damaged {monster.Name} for {player.Attack(monster)} damage.");

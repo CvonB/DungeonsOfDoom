@@ -17,12 +17,24 @@ namespace DungeonsOfDoom
         public int Power => EquipedWeapon.Power;
         public string Name { get; set; }
         public int CritChance { get; set; }
+        /// <summary>
+        /// Current item affecting entity damage.
+        /// </summary>
         public Weapon EquipedWeapon { get; set; }
+        /// <summary>
+        /// Current item reducing taken damage by entity.
+        /// </summary>
         public Armor EquipedArmor { get; set; }
 
+        /// <summary>
+        /// Makes entity attack a designated opponent. Damage is affected by entity's equiped weapon
+        /// as well as opponent's equiped armor. Further affected by attacking entity's CritChange property.
+        /// </summary>
+        /// <param name="opponent"></param>
+        /// <returns></returns>
         public int Attack(LivingEntity opponent)
         {
-            double damage = Power - opponent.EquipedArmor.Power; //Double för att kunna utföra matematiska beräkningar
+            double damage = Power - opponent.Power; //Double för att kunna utföra matematiska beräkningar
             if (EquipedWeapon.StrongAgainst == opponent.EquipedArmor.ArmorType)
                 damage *= 1.5;
             if(Random.Shared.Next(0,100) < CritChance)
