@@ -43,6 +43,7 @@
 
         private void CreateWorld()
         {
+            int notOnPlayer = 0;
             world = new Room[20, 5];
             for (int y = 0; y < world.GetLength(1); y++)
             {
@@ -52,15 +53,16 @@
 
                     int percentage = Random.Shared.Next(1, 100);
 
-                    if (percentage < 10)
+                    if (percentage < 10 && notOnPlayer != 0)
                     {
-                        world[x, y].MonsterInRoom = RandomMonster(x,y);   //new Monster("Skeleton", 30);  //gammal
+                        world[x, y].MonsterInRoom = RandomMonster(x, y);   //new Monster("Skeleton", 30);  //gammal
 
                     }
                     //else if (percentage < 20)   //Gammla systemet
                     //    world[x, y].ItemInRoom = new Item();
-                    else if (percentage < 20)
+                    else if (percentage < 20 && notOnPlayer != 0)
                         world[x, y].ItemInRoom = RandomItem(); // Generar random item
+                    notOnPlayer++;
                 }
             }
         }
@@ -75,7 +77,9 @@
         private static Func<Item>[] tableOfItems =
         {
             () => new Consumable(),
-            () => new Weapon()
+            () => new Axe(),
+            () => new Sword(),
+            () => new Spear()
         };
 
         public static Monster RandomMonster(int x, int y)
