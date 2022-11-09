@@ -10,6 +10,7 @@
             Health = health;
             HasItem();
             Rare = Rarity.Common;
+            Power = 1;
         }
 
         public Monster(string name, int health, Rarity rare)
@@ -23,7 +24,9 @@
         public Rarity Rare { get; set; }
 
         public string Ascii { get; set; }
-        public string Name { get; set; }
+
+        public string Type => this.GetType().ToString().Split('.')[1];
+
 
 
 
@@ -55,6 +58,7 @@
     {
         public Ghost() : base("Ghost", 45)
         {
+            Power = 15;
             EntityColor = ConsoleColor.Red;
             Ascii = "\t\t\t      .'``'.      ...\r\n\t\t\t     :o  o `....'`  ;\r\n\t\t\t     `. O         :'\r\n\t\t\t       `':          `.\r\n\t\t\t         `:.          `.\r\n\t\t\t          : `.         `.\r\n\t\t\t         `..'`...       `.\r\n\t\t\t                 `...     `.\r\n\t\t\t                     ``...  `.\r\n\t\t\t                          `````.";
         }

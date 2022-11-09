@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonsOfDoom
 {
-    internal class LivingEntity
+    abstract internal class LivingEntity
     {
         public int Health { get; set; }
         public List<Item> Inventory { get; set; } = new List<Item>();
@@ -14,7 +14,19 @@ namespace DungeonsOfDoom
         public int X { get; set; }
         public int Y { get; set; }
         public ConsoleColor EntityColor { get; set; }
-        
+        public int Power { get; set; }
+        public string Name { get; set; }
+
+
+
+        public int Attack(LivingEntity opponent)
+        {
+            int damage = Power;
+            if (IsAlive)
+                opponent.Health -= damage;
+            return damage;
+        }
+
     }
 
     enum ArmorTypes

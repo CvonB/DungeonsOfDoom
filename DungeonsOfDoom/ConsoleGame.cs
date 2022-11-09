@@ -15,8 +15,8 @@
                 Console.Clear();
                 DisplayWorld();
                 DisplayStats();
-                AskForMovement();
                 EnterRoom();
+                AskForMovement();
             } while (player.IsAlive);
             GameOver();
         }
@@ -32,9 +32,15 @@
             }
             else if (room.MonsterInRoom != null) //If there is a monster in the room
             {
-                player.Inventory.AddRange(room.MonsterInRoom.Inventory);
-                room.MonsterInRoom = null;
-                StackItem(player.Inventory);
+                Monster enemy = room.MonsterInRoom;
+                Combat(player, enemy);
+                if (!room.MonsterInRoom.IsAlive)
+                {
+                    player.Inventory.AddRange(enemy.Inventory);
+                    enemy = null;
+                    StackItem(player.Inventory);
+                }
+                Console.ReadKey();
             }
         }
 
@@ -44,22 +50,25 @@
             Item tmpItem = null;
             for (int i = 0; i < inventory.Count; i++)
             {
-                int j = 0;
-                var tmpList = inventory.Where(x => x.Name.Equals(inventory[i].Name)).Where(x => x.Type.Equals(inventory[i].Type)).ToList();
-                foreach (var item in tmpList)
+                if (inventory[i].Stackable)
                 {
-                    if (j++ > 0)
+                    int j = 0;
+                    var tmpList = inventory.Where(x => x.Name.Equals(inventory[i].Name)).Where(x => x.Type.Equals(inventory[i].Type)).ToList();
+                    foreach (var item in tmpList)
                     {
-                        inventory.Remove(item);
-                        tmpItem.Count++;
+                        if (j++ > 0)
+                        {
+                            inventory.Remove(item);
+                            tmpItem.Count++;
+                        }
+                        else
+                            tmpItem = item;
                     }
-                    else
-                        tmpItem = item;
-
                 }
             }
         }
 
+        #region Creation
         private void CreatePlayer()
         {
             player = new Player();
@@ -91,7 +100,9 @@
             }
         }
 
-        //TODO: Titta gärna på denna metod. Den tar en random av de två Item Subclasserna
+        #endregion
+
+        #region RandomGen
         public static Item RandomItem()
         {
             var rand = new Random().Next(0, tableOfItems.Length);
@@ -121,9 +132,13 @@
         private static Func<Monster>[] tableOfMonsters =
         {
             () => new Ghost(),
-            () => new Skeleton()
+            () => new Skeleton(),
+            () => new Beast(),
+            () => new Zombie(),
         };
+        #endregion
 
+        #region Display
         private void DisplayWorld()
         {
             for (int y = 0; y < world.GetLength(1); y++)
@@ -158,13 +173,37 @@
         private void DisplayStats()
         {
             Console.WriteLine($"Health: {player.Health}");
-            Console.WriteLine("Items: ");
-            foreach (var item in player.Inventory)
-            {
-                Console.WriteLine($"{item.Name} of type: {item.Type} {item.Count} ");
-            }
+            Console.WriteLine("[I]nventory:");
+
         }
 
+
+        private void Inventory(List<Item> inventory)
+        {
+            Console.Clear();
+            foreach (var item in inventory)
+            {
+                string tmp ="";
+                if (item.Stackable)
+                    tmp = $"{item.Power} Health {item.Count}x";
+                else
+                    tmp = $"{item.Power} power.";
+                Console.WriteLine($"{item.Name} of type: {item.Type} {tmp} ");
+            }
+            Console.ReadKey();
+            Console.Clear();
+            DisplayWorld();
+            DisplayStats();
+        }
+
+        private void GameOver()
+        {
+            Console.Clear();
+            Console.WriteLine("Game over...");
+            Console.ReadKey();
+            Play();
+        }
+#endregion
         private void AskForMovement()
         {
             bool isValidKey = false;
@@ -179,6 +218,7 @@
                     case ConsoleKey.LeftArrow: newX--; isValidKey = true; break;
                     case ConsoleKey.UpArrow: newY--; isValidKey = true; break;
                     case ConsoleKey.DownArrow: newY++; isValidKey = true; break;
+                    case ConsoleKey.I: Inventory(player.Inventory); break;
                     default: isValidKey = false; break;
                 }
                 if (newX >= 0 && newX < world.GetLength(0) &&
@@ -192,12 +232,14 @@
             } while (!isValidKey);
         }
 
-        private void GameOver()
+        public void Combat(LivingEntity attacker, LivingEntity opponent)
         {
-            Console.Clear();
-            Console.WriteLine("Game over...");
-            Console.ReadKey();
-            Play();
+            Console.WriteLine($"You damaged {opponent.Name} for {attacker.Attack(opponent)} damage.");
+            if (opponent.IsAlive)
+            {
+                Console.WriteLine($"{opponent.Name} damaged you for {opponent.Attack(attacker)} damage.");
+            }
         }
+
     }
 }

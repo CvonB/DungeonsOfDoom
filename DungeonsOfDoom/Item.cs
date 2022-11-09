@@ -23,6 +23,8 @@ namespace DungeonsOfDoom
         public int Count { get; set; } = 1;
 
         public Rarity Rare { get; set; }
+        public bool Stackable { get; set; }
+        public int Power { get; set; }
     }
 
     abstract class Weapon : Item
@@ -32,13 +34,13 @@ namespace DungeonsOfDoom
         {
             Power = power;
             
+            
         }
         // if Armor = StrongAgainst > Damage = 1.5 else Damage 1
         // rand 0-100.
         // if (crit > rand) Damage *= 2
         // Health - power*Damage
         public ArmorTypes StrongAgainst { get; set; }
-        public int Power { get; set; }
     }
 
     class Sword : Weapon
@@ -69,10 +71,8 @@ namespace DungeonsOfDoom
     {
         public Consumable() : base("Health Potion")
         {
-
+            Stackable = true;
+            Power = 5;
         }
     }
-
-
-   
 }
