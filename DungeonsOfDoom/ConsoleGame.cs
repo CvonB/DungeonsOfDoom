@@ -32,9 +32,14 @@
             }
             else if (room.MonsterInRoom != null) //If there is a monster in the room
             {
-                player.Inventory.AddRange(room.MonsterInRoom.Inventory);
-                room.MonsterInRoom = null;
-                StackItem(player.Inventory);
+                player.Attack(room.MonsterInRoom);
+                room.MonsterInRoom.Attack(player);
+                if (!room.MonsterInRoom.IsAlive)
+                {
+                    player.Inventory.AddRange(room.MonsterInRoom.Inventory);
+                    room.MonsterInRoom = null;
+                    StackItem(player.Inventory);
+                }
             }
         }
 
@@ -121,7 +126,9 @@
         private static Func<Monster>[] tableOfMonsters =
         {
             () => new Ghost(),
-            () => new Skeleton()
+            () => new Skeleton(),
+            () => new Beast(),
+            () => new Zombie(),
         };
 
         private void DisplayWorld()
