@@ -13,5 +13,25 @@ namespace DungeonsOfDoom
             int tmp = Random.Shared.Next(0,Enum.GetNames(typeof(Rarity)).Length);
             return (Rarity)tmp;
         }
+
+        public static ConsoleColor RarityColor(Rarity rarity)
+        {
+            switch (rarity)
+            {
+                case Rarity.Uncommon:
+                    return ConsoleColor.Green;
+                case Rarity.Rare:
+                    return ConsoleColor.Blue;
+                case Rarity.Epic:
+                    return ConsoleColor.Magenta;
+                case Rarity.Legendary:
+                    return ConsoleColor.Red;
+
+                    default:
+                    return ConsoleColor.White;
+            }
+
+        }
     }
+
 }

@@ -18,7 +18,8 @@
         public Item(string name)
         {
             Name = name;
-            Rare = Rarity.Common;
+
+            Rare = RandomUtils.RandomRarity();
         }
 
         public Item(string name, Rarity rare)

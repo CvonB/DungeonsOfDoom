@@ -90,7 +90,10 @@
             else if (room.MonsterInRoom != null)
             {
                 Monster enemy = room.MonsterInRoom;
-                WriteAt($"You have encountered {enemy.Type}");
+                WriteAt($"You have encountered a ");
+                Console.ForegroundColor = RandomUtils.RarityColor(enemy.Rare);
+                Console.Write($"{ enemy.Type}");
+                Console.ResetColor();
                 WriteAt($"Press any key to attack (or [R]un if you are scared)", 0, 7);
                 if (Console.ReadKey(true).Key == ConsoleKey.R)
                     Flee();
@@ -152,7 +155,7 @@
                 if (inventory[i].Stackable)
                 {
                     int j = 0;
-                    var tmpList = inventory.Where(x => x.Name.Equals(inventory[i].Name)).Where(x => x.Type.Equals(inventory[i].Type)).ToList();
+                    var tmpList = inventory.Where(x => x.Name.Equals(inventory[i].Name)).Where(x => x.Type.Equals(inventory[i].Type)).Where(x => x.Rare.Equals(inventory[i].Rare)).ToList();
                     foreach (var item in tmpList)
                     {
                         if (j++ > 0)
@@ -370,7 +373,10 @@
                 WriteAt($"                  ", 52 + indent, 8 + startRow);
 
                 WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
-                WriteAt($"Rarity: {item.Rare}", 52 + indent, 4 + startRow);
+                WriteAt($"Rarity: ", 52 + indent, 4 + startRow);
+                Console.ForegroundColor = RandomUtils.RarityColor(item.Rare);
+                WriteAt($"{item.Rare}",60 + indent, 4 + startRow);
+                Console.ResetColor();
                 if (item.Power != 0)
                     WriteAt($"Power:  {item.Power}", 52 + indent, 5 + startRow);
                 if (player.EquippedWeapon == item || player.EquippedArmor == item)
