@@ -14,9 +14,8 @@
             
             do
             {
-                Console.Clear();
+                ClearBelow();
                 EnterRoom();
-                Console.Clear();
                 DisplayWorld();
                 DisplayStats();
                 AskForMovement();
@@ -37,6 +36,20 @@
             try
             {
                 Console.SetCursorPosition(origCol + x, origRow + y);
+                Console.Write(s);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        static void WriteAt(string s)
+        {
+            try
+            {
+                Console.SetCursorPosition(origCol + 0, origRow + 6);
                 Console.Write(s);
             }
             catch (ArgumentOutOfRangeException e)
@@ -68,8 +81,7 @@
             Room room = world[player.X, player.Y];
             if (room.ItemInRoom != null)
             {
-                Console.WriteLine($"You picked up {room.ItemInRoom.Name}");
-                Thread.Sleep(1000);
+                WriteAt($"You picked up {room.ItemInRoom.Name}");
                 player.Inventory.Add(room.ItemInRoom);
                 room.ItemInRoom = null;
                 StackItem(player.Inventory);
@@ -77,8 +89,8 @@
             else if (room.MonsterInRoom != null)
             {
                 Monster enemy = room.MonsterInRoom;
-                Console.WriteLine($"You have encountered {enemy.Type}");
-                Console.WriteLine($"Press any key to attack (or [R]un if you are scared)");
+                WriteAt($"You have encountered {enemy.Type}");
+                WriteAt($"Press any key to attack (or [R]un if you are scared)",0,7);
                 if (Console.ReadKey(true).Key == ConsoleKey.R)
                     Flee();
                 else
@@ -90,6 +102,7 @@
                     }
                 }
             }
+
         }
 
         /// <summary>
@@ -254,21 +267,29 @@
                     if (player.X == x && player.Y == y)
                     {
                         Console.ForegroundColor = player.EntityColor;
-                        Console.Write("P");
+                        WriteAt("P",x,y);
                         Console.ResetColor();
                     }
                     else if (room.MonsterInRoom != null)
                     {
                         Console.ForegroundColor = room.MonsterInRoom.EntityColor;
-                        Console.Write("M");
+                        WriteAt("M",x,y);
                         Console.ResetColor();
                     }
                     else if (room.ItemInRoom != null)
-                        Console.Write("I");
+                        WriteAt("I",x,y);
                     else
-                        Console.Write(".");
+                        WriteAt(".",x,y);
                 }
                 Console.WriteLine();
+            }
+        }
+
+        private void ClearBelow()
+        {
+            for (int i = world.GetLength(1); i < 15; i++)
+            {
+                WriteAt("                                                              ", 0, i);
             }
         }
 
@@ -288,7 +309,7 @@
         /// <param name="inventory"></param>
         private void Inventory(List<Item> inventory)
         {
-            Console.Clear();
+            int indent = 0, startRow = 6;
             int picked = 0;
             for (int i = 0; i < inventory.Count; i++)
             {
@@ -301,16 +322,15 @@
                     if (player.EquipedWeapon == item || player.EquipedArmor == item)
                         tmp = $"{tmp} [Equiped]";
                 }
-                Console.WriteLine($"{item.Name} {tmp} ");
+                WriteAt($"{item.Name} {tmp}", indent, i+ startRow);
+
             }
 
-            InventoryMove(picked);
-            Console.Clear();
-            DisplayWorld();
-            DisplayStats();
+            InventoryMove(picked,indent,startRow);
+            ClearBelow();
         }
 
-        private void InventoryMove(int picked)
+        private void InventoryMove(int picked, int indent, int startRow)
         {
             int previous = picked;
             if (player.Inventory.Count == 0)
@@ -318,22 +338,22 @@
             while (true)
             {
                 Item item = player.Inventory[picked];
-                WriteAt("   ", 30, previous);
-                WriteAt("<--", 30, picked);
-                WriteAt("--------------------", 60, 2);
-                WriteAt("--------------------", 60, 12);
-                for (int i = 2; i < 13; i++)
+                WriteAt("   ", 20+ indent, previous + startRow);
+                WriteAt("<--", 20+ indent, picked + startRow);
+                WriteAt("--------------------", 50+ indent, startRow);
+                WriteAt("--------------------", 50+ indent, startRow+10);
+                for (int i = startRow; i < startRow+11; i++)
                 {
-                WriteAt("|", 60, i);
-                WriteAt("|", 80, i);
+                WriteAt("|", 50 + indent, i);
+                WriteAt("|", 70 + indent, i);
                 }
-                WriteAt($"Type:            ", 62, 3);
-                WriteAt($"Power:           ", 62, 4);
-                WriteAt($"Rarity:          ", 62, 5);
+                WriteAt($"Type:            ", 52 + indent, 3+ startRow);
+                WriteAt($"Power:           ", 52 + indent, 4+ startRow);
+                WriteAt($"Rarity:          ", 52 + indent, 5 + startRow);
 
-                WriteAt($"Type: {item.Type}", 62, 3);
-                WriteAt($"Power: {item.Power}", 62, 4);
-                WriteAt($"Rarity: {item.Rare}", 62, 5);
+                WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
+                WriteAt($"Power:  {item.Power}", 52 + indent, 4 + startRow);
+                WriteAt($"Rarity: {item.Rare}", 52 + indent, 5 + startRow);
 
                 switch (Console.ReadKey(true).Key) 
                 {
@@ -419,20 +439,18 @@
         /// <param name="monster"></param>
         public void Combat(LivingEntity player, LivingEntity monster)
         {
-            Console.WriteLine($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
+            WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
             if (monster.IsAlive)
             {
-                Console.Write($" {monster.Name} has {monster.Health} health remaining.");
-                Console.WriteLine($"{monster.Name} damaged you for {monster.Attack(player)} damage.");
+                WriteAt($"{monster.Name} has {monster.Health} health remaining.",0,7);
+                WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.",0,8);
             }
             else
             {
-                Console.WriteLine($"You killed {monster.Name}. Grab you loot!");
+                WriteAt($"You killed {monster.Name}. Grab you loot!", 0,7);
                 player.Inventory.AddRange(monster.Inventory);
                 StackItem(player.Inventory);
             }
-            Console.WriteLine("move along...");
-            Console.ReadKey();
         }
     }
 
