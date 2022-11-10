@@ -318,8 +318,8 @@
             while (true)
             {
                 Item item = player.Inventory[picked];
-                WriteAt("   ", 50, previous);
-                WriteAt("<--", 50, picked);
+                WriteAt("   ", 30, previous);
+                WriteAt("<--", 30, picked);
                 WriteAt("--------------------", 60, 2);
                 WriteAt("--------------------", 60, 12);
                 for (int i = 2; i < 13; i++)
@@ -327,11 +327,13 @@
                 WriteAt("|", 60, i);
                 WriteAt("|", 80, i);
                 }
+                WriteAt($"Type:            ", 62, 3);
+                WriteAt($"Power:           ", 62, 4);
+                WriteAt($"Rarity:          ", 62, 5);
+
                 WriteAt($"Type: {item.Type}", 62, 3);
                 WriteAt($"Power: {item.Power}", 62, 4);
                 WriteAt($"Rarity: {item.Rare}", 62, 5);
-
-
 
                 switch (Console.ReadKey(true).Key) 
                 {
