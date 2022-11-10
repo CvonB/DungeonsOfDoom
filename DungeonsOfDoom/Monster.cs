@@ -1,6 +1,6 @@
 ﻿namespace DungeonsOfDoom
 {
-    abstract class Monster : LivingEntity
+    abstract class Monster : LivingEntity, ICarryable
     {
         public Monster(string name, int health)
         {
@@ -10,7 +10,7 @@
             Rare = Rarity.Common;
             EquippedWeapon = new Unarmed();
             EquippedArmor = new Unarmored();
-            MonsterList.Add (this);
+            MonsterList.Add(this);
 
         }
 
@@ -20,7 +20,7 @@
             Health = health;
             HasItem();
             Rare = rare;
-            MonsterList.Add (this);
+            MonsterList.Add(this);
         }
 
         public override int Health
@@ -30,8 +30,27 @@
             {
                 base.Health = value;
                 if (base.Health <= 0)
+                {
                     MonsterList.Remove(this);
+                }
             }
+        }
+
+        public override string Name
+        {
+            get
+            {
+                if (IsAlive)
+                    return base.Name;
+
+                return $"{base.Name} corpse";
+            }
+            set => base.Name = value;
+        }
+
+        public void Interact()
+        {
+
         }
 
         public static int MonsterCounter => MonsterList.Count;
@@ -40,6 +59,10 @@
         public Rarity Rare { get; set; }
 
         public string Ascii { get; set; }
+
+        public bool Stackable { get; set; }
+
+        public int Count { get; set; }
 
         public string Type => this.GetType().ToString().Split('.')[1];
 

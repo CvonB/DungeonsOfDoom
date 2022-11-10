@@ -1,6 +1,19 @@
 ﻿namespace DungeonsOfDoom
 {
-    abstract class Item
+    interface ICarryable
+    {
+        public string Name { get; set; }
+        public string Type { get; }
+        public int Power { get; set; }
+        public Rarity Rare { get; set; }
+        public bool Stackable { get; set; }
+        public int Count { get; set; }
+        void Interact() { }
+        void Interact(LivingEntity Player) { }
+        
+    }
+
+    abstract class Item : ICarryable
     {
         public Item(string name)
         {
@@ -14,7 +27,7 @@
             Rare = rare;
         }
 
-        public abstract void Use(LivingEntity user);
+        public virtual void Interact(LivingEntity user) { }
         public string Name { get; set; }
 
         //public bool Consumable => Type == "Consumable";
@@ -57,7 +70,7 @@
         // Health - power*Damage
 
         public ArmorTypes StrongAgainst { get; set; }
-        public override void Use(LivingEntity user)
+        public override void Interact(LivingEntity user)
         {
             user.EquippedWeapon= this;
         }
@@ -125,7 +138,7 @@
             Power = 0;
             ArmorType = type;
         }
-        public override void Use(LivingEntity user)
+        public override void Interact(LivingEntity user)
         {
             user.EquippedArmor = this;
         }
@@ -158,9 +171,12 @@
             Power = 5;
         }
         // Nedan use borde flyttas ner till subclass "healing items" för att sedan kunna ha consumables som ger andra effekter.
-        public override void Use(LivingEntity user)
+        public override void Interact(LivingEntity user)
         {
             user.Health += Power;
+            Count--;
+            if (Count == 0)
+                user.Inventory.Remove(this);
         }
     }
     #endregion

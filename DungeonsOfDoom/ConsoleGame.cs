@@ -11,7 +11,7 @@
             Console.CursorVisible = false;
             CreatePlayer();
             CreateWorld();
-            
+
             do
             {
                 ClearBelow();
@@ -79,7 +79,7 @@
         private void EnterRoom()
         {
             Room room = world[player.X, player.Y];
-            
+
             if (room.ItemInRoom != null)
             {
                 WriteAt($"You picked up {room.ItemInRoom.Name}");
@@ -91,7 +91,7 @@
             {
                 Monster enemy = room.MonsterInRoom;
                 WriteAt($"You have encountered {enemy.Type}");
-                WriteAt($"Press any key to attack (or [R]un if you are scared)",0,7);
+                WriteAt($"Press any key to attack (or [R]un if you are scared)", 0, 7);
                 if (Console.ReadKey(true).Key == ConsoleKey.R)
                     Flee();
                 else
@@ -143,10 +143,10 @@
         /// Takes player inventory and for each stackable item it will remove duplicates and add to the first instance's count.
         /// </summary>
         /// <param name="inventory"></param>
-        private void StackItem(List<Item> inventory)
+        private void StackItem(List<ICarryable> inventory)
         {
 
-            Item tmpItem = null;
+            ICarryable tmpItem = null;
             for (int i = 0; i < inventory.Count; i++)
             {
                 if (inventory[i].Stackable)
@@ -270,19 +270,19 @@
                     if (player.X == x && player.Y == y)
                     {
                         Console.ForegroundColor = player.EntityColor;
-                        WriteAt("P",x,y);
+                        WriteAt("P", x, y);
                         Console.ResetColor();
                     }
                     else if (room.MonsterInRoom != null)
                     {
                         Console.ForegroundColor = room.MonsterInRoom.EntityColor;
-                        WriteAt("M",x,y);
+                        WriteAt("M", x, y);
                         Console.ResetColor();
                     }
                     else if (room.ItemInRoom != null)
-                        WriteAt("I",x,y);
+                        WriteAt("I", x, y);
                     else
-                        WriteAt(".",x,y);
+                        WriteAt(".", x, y);
                 }
                 Console.WriteLine();
             }
@@ -310,15 +310,15 @@
         /// Displays all items in player.Inventory and allows user to interact with inventory.
         /// </summary>
         /// <param name="inventory"></param>
-        private void Inventory(List<Item> inventory)
+        private void Inventory(List<ICarryable> inventory)
         {
             int indent = 0, startRow = 8;
             int picked = 0;
-            WriteAt("[I]nventory close", indent, startRow-2);
-            WriteAt("[E]quip", indent, startRow-1);
+            WriteAt("[I]nventory close", indent, startRow - 2);
+            WriteAt("[E]quip", indent, startRow - 1);
             for (int i = 0; i < inventory.Count; i++)
             {
-                Item item = inventory[i];
+                ICarryable item = inventory[i];
                 string tmp = "";
                 if (item.Stackable)
                     tmp = $"{item.Count}x";
@@ -327,11 +327,11 @@
                     if (player.EquippedWeapon == item || player.EquippedArmor == item)
                         tmp = $"{tmp} [Equiped]";
                 }
-                WriteAt($"{item.Name} {tmp}", indent, i+ startRow);
+                WriteAt($"{item.Name} {tmp}", indent, i + startRow);
 
             }
 
-            InventoryMove(picked,indent,startRow);
+            InventoryMove(picked, indent, startRow);
             ClearBelow();
         }
 
@@ -342,42 +342,45 @@
                 return;
             while (true)
             {
-                Item item = player.Inventory[picked];
-                WriteAt("   ", 20+ indent, previous + startRow);
-                WriteAt("<--", 20+ indent, picked + startRow);
-                WriteAt("--------------------", 50+ indent, startRow);
-                WriteAt("--------------------", 50+ indent, startRow+10);
-                for (int i = startRow; i < startRow+11; i++)
+                ICarryable item = player.Inventory[picked];
+                WriteAt("   ", 20 + indent, previous + startRow);
+                WriteAt("<--", 20 + indent, picked + startRow);
+                WriteAt("--------------------", 50 + indent, startRow);
+                WriteAt("--------------------", 50 + indent, startRow + 10);
+                for (int i = startRow; i < startRow + 11; i++)
                 {
-                WriteAt("|", 50 + indent, i);
-                WriteAt("|", 70 + indent, i);
+                    WriteAt("|", 50 + indent, i);
+                    WriteAt("|", 70 + indent, i);
                 }
-                WriteAt($"Type:             ", 52 + indent, 3+ startRow);
-                WriteAt($"Power:            ", 52 + indent, 4+ startRow);
-                WriteAt($"Rarity:           ", 52 + indent, 5 + startRow);
+                WriteAt($"Type:             ", 52 + indent, 3 + startRow);
+                WriteAt($"Rarity:           ", 52 + indent, 4 + startRow);
+                WriteAt($"Power:            ", 52 + indent, 5 + startRow);
 
                 WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
-                WriteAt($"Power:  {item.Power}", 52 + indent, 4 + startRow);
-                WriteAt($"Rarity: {item.Rare}", 52 + indent, 5 + startRow);
+                WriteAt($"Rarity: {item.Rare}", 52 + indent, 4 + startRow);
+                if (item.Power > 0)
+                    WriteAt($"Power:  {item.Power}", 52 + indent, 5 + startRow);
 
-                switch (Console.ReadKey(true).Key) 
+                switch (Console.ReadKey(true).Key)
                 {
                     case ConsoleKey.UpArrow:
                         if (picked > 0)
                         {
-                            previous= picked;
+                            previous = picked;
                             picked--;
                         }
                         break;
                     case ConsoleKey.DownArrow:
-                        if (picked < player.Inventory.Count-1)
+                        if (picked < player.Inventory.Count - 1)
                         {
-                            previous= picked;
+                            previous = picked;
                             picked++;
                         }
                         break;
                     case ConsoleKey.E:
-                        // lägg Use metoden här
+                        player.Inventory[picked].Interact(player);
+                        previous = picked;
+                        picked = 0;
                         break;
                     case ConsoleKey.I:
                         return;
@@ -442,18 +445,19 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="monster"></param>
-        public void Combat(LivingEntity player, LivingEntity monster)
+        public void Combat(LivingEntity player, Monster monster)
         {
             WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
             if (monster.IsAlive)
             {
-                WriteAt($"{monster.Name} has {monster.Health} health remaining.",0,7);
-                WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.",0,8);
+                WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 7);
+                WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 8);
             }
             else
             {
-                WriteAt($"You killed {monster.Name}. Grab you loot!", 0,7);
+                WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 7);
                 player.Inventory.AddRange(monster.Inventory);
+                player.Inventory.Add(monster);
                 StackItem(player.Inventory);
             }
         }

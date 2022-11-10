@@ -9,13 +9,13 @@ namespace DungeonsOfDoom
     abstract internal class LivingEntity
     {
         virtual public int Health { get; set; }
-        public List<Item> Inventory { get; set; } = new List<Item>();
+        public List<ICarryable> Inventory { get; set; } = new List<ICarryable>();
         public bool IsAlive { get { return Health > 0; } }
         public int X { get; set; }
         public int Y { get; set; }
         public ConsoleColor EntityColor { get; set; }
-        public int Power => EquippedWeapon.Power;
-        public string Name { get; set; }
+        public int Power {get; set; }
+        public virtual string Name { get; set; }
         public int CritChance { get; set; }
         /// <summary>
         /// Current item affecting entity damage.
@@ -34,7 +34,7 @@ namespace DungeonsOfDoom
         /// <returns></returns>
         public int Attack(LivingEntity opponent)
         {
-            double damage = Power; //Double för att kunna utföra matematiska beräkningar
+            double damage = Power + EquippedWeapon.Power; //Double för att kunna utföra matematiska beräkningar
             if (EquippedWeapon.StrongAgainst == opponent.EquippedArmor.ArmorType)
                 damage *= 1.5;
             if(Random.Shared.Next(0,100) < CritChance)
