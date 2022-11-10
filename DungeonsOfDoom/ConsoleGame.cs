@@ -22,8 +22,25 @@
             GameOver();
         }
 
+        static int origRow;
+        static int origCol;
+
+        static void WriteAt(string s, int x, int y)
+        {
+            try
+            {
+                Console.SetCursorPosition(origCol + x, origRow + y);
+                Console.Write(s);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+            }
+        }
+
         /// <summary>
-        /// Returns a random rarity.
+        /// Returns a random value in ENUM rarity.
         /// </summary>
         /// <returns></returns>
         public Rarity RandomRarity()
@@ -252,8 +269,8 @@
         /// </summary>
         private void DisplayStats()
         {
-            Console.WriteLine($"Health: {player.Health}");
-            Console.WriteLine("[I]nventory:");
+            WriteAt($"Health: {player.Health}", 40, 0);
+            WriteAt($"[I]nventory:", 40, 1);
         }
 
         /// <summary>
@@ -343,4 +360,5 @@
             Console.ReadKey();
         }
     }
+
 }
