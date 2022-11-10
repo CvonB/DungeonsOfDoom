@@ -79,6 +79,7 @@
         private void EnterRoom()
         {
             Room room = world[player.X, player.Y];
+            
             if (room.ItemInRoom != null)
             {
                 WriteAt($"You picked up {room.ItemInRoom.Name}");
@@ -95,6 +96,7 @@
                     Flee();
                 else
                 {
+                    ClearBelow();
                     Combat(player, enemy);
                     if (!enemy.IsAlive)
                     {
