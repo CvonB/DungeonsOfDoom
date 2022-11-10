@@ -289,19 +289,76 @@
         private void Inventory(List<Item> inventory)
         {
             Console.Clear();
-            foreach (var item in inventory)
+            int picked = 0;
+            for (int i = 0; i < inventory.Count; i++)
             {
+                Item item = inventory[i];
                 string tmp = "";
                 if (item.Stackable)
-                    tmp = $"{item.Power} Health {item.Count}x";
+                    tmp = $"{item.Count}x";
                 else
-                    tmp = $"{item.Power} power.";
-                Console.WriteLine($"{item.Name} of type: {item.Type} {tmp} ");
+                {
+                    if (player.EquipedWeapon == item || player.EquipedArmor == item)
+                        tmp = $"{tmp} [Equiped]";
+                }
+                Console.WriteLine($"{item.Name} {tmp} ");
             }
-            Console.ReadKey();
+
+            InventoryMove(picked);
             Console.Clear();
             DisplayWorld();
             DisplayStats();
+        }
+
+        private void InventoryMove(int picked)
+        {
+            int previous = picked;
+            //if (player.Inventory.Count == 0)
+            //    return;
+            while (true)
+            {
+                Item item = player.Inventory[picked];
+                WriteAt("   ", 50, previous);
+                WriteAt("<--", 50, picked);
+                WriteAt("--------------------", 60, 2);
+                WriteAt("--------------------", 60, 12);
+                for (int i = 2; i < 13; i++)
+                {
+                WriteAt("|", 60, i);
+                WriteAt("|", 80, i);
+                }
+                WriteAt($"Type: {item.Type}", 62, 3);
+                WriteAt($"Power: {item.Power}", 62, 4);
+                WriteAt($"Rarity: {item.Rare}", 62, 5);
+
+
+
+                switch (Console.ReadKey(true).Key) 
+                {
+                    case ConsoleKey.UpArrow:
+                        if (picked > 0)
+                        {
+                            previous= picked;
+                            picked--;
+                        }
+                        break;
+                    case ConsoleKey.DownArrow:
+                        if (picked < player.Inventory.Count-1)
+                        {
+                            previous= picked;
+                            picked++;
+                        }
+                        break;
+                    case ConsoleKey.U:
+                        // lägg Use metoden här
+                        break;
+                    case ConsoleKey.E:
+                        return;
+                }
+
+
+
+            }
         }
 
         /// <summary>

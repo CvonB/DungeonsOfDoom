@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DungeonsOfDoom
+﻿namespace DungeonsOfDoom
 {
     abstract class Item
     {
@@ -16,13 +14,14 @@ namespace DungeonsOfDoom
             Rare = rare;
         }
 
-        public string Name { get; set; } 
+
+        public string Name { get; set; }
 
         //public bool Consumable => Type == "Consumable";
         /// <summary>
         /// Returns SubClass to string.
         /// </summary>
-        public string Type  => this.GetType().ToString().Split('.')[1];
+        public string Type => this.GetType().ToString().Split('.')[1];
         /// <summary>
         /// Returns how many of said Item is in Inventory. Only applicable if Stackable == true.
         /// </summary>
@@ -60,7 +59,7 @@ namespace DungeonsOfDoom
         public ArmorTypes StrongAgainst { get; set; }
     }
 
-    
+
     class Unarmed : Weapon
     {
         public Unarmed() : base("Your fists", 10)
@@ -94,7 +93,7 @@ namespace DungeonsOfDoom
         public Axe(int power) : base("Axe", power)
         {
 
-        }        
+        }
         public Axe() : base("Axe", 15)
         {
 
@@ -126,13 +125,15 @@ namespace DungeonsOfDoom
         public ArmorTypes ArmorType { get; set; }
     }
 
-    class Unarmored : Armor    {
+    class Unarmored : Armor
+    {
         public Unarmored() : base("Heavy Mail", ArmorTypes.Unarmored)
         {
-            
+
         }
     }
-    class HeavyMail : Armor    {
+    class HeavyMail : Armor
+    {
         public HeavyMail() : base("Heavy Mail", ArmorTypes.Heavy)
         {
             Power = 3;
