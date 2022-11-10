@@ -7,7 +7,7 @@
             Name = name;
             Health = health;
             HasItem();
-            Rare = Rarity.Common;
+            Rare = RandomUtils.RandomRarity();
             EquippedWeapon = new Unarmed();
             EquippedArmor = new Unarmored();
             MonsterList.Add(this);

@@ -322,29 +322,41 @@
                 string tmp = "";
                 if (item.Stackable)
                     tmp = $"{item.Count}x";
-                else
-                {
-                    if (player.EquippedWeapon == item || player.EquippedArmor == item)
-                        tmp = $"{tmp} [Equiped]";
-                }
-                WriteAt($"{item.Name} {tmp}", indent, i + startRow);
+                WriteAt($"{item.Name} {tmp}", indent + 3, i + startRow);
 
             }
 
             InventoryMove(picked, indent, startRow);
             ClearBelow();
         }
+        private void ReInventory(List<ICarryable> inventory)
+        {
+            int indent = 0, startRow = 8;
+            int picked = 0;
+            ClearBelow();
+            WriteAt("[I]nventory close", indent, startRow - 2);
+            WriteAt("[E]quip", indent, startRow - 1);
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                ICarryable item = inventory[i];
+                string tmp = "";
+                if (item.Stackable)
+                    tmp = $"{item.Count}x";
+                WriteAt($"{item.Name} {tmp}", indent + 3, i + startRow);
+
+            }
+        }
 
         private void InventoryMove(int picked, int indent, int startRow)
         {
             int previous = picked;
-            if (player.Inventory.Count == 0)
-                return;
             while (true)
             {
+                if (player.Inventory.Count == 0)
+                    return;
                 ICarryable item = player.Inventory[picked];
-                WriteAt("   ", 20 + indent, previous + startRow);
-                WriteAt("<--", 20 + indent, picked + startRow);
+                WriteAt("   ", indent, previous + startRow);
+                WriteAt("-->", indent, picked + startRow);
                 WriteAt("--------------------", 50 + indent, startRow);
                 WriteAt("--------------------", 50 + indent, startRow + 10);
                 for (int i = startRow; i < startRow + 11; i++)
@@ -354,12 +366,16 @@
                 }
                 WriteAt($"Type:             ", 52 + indent, 3 + startRow);
                 WriteAt($"Rarity:           ", 52 + indent, 4 + startRow);
-                WriteAt($"Power:            ", 52 + indent, 5 + startRow);
+                WriteAt($"                  ", 52 + indent, 5 + startRow);
+                WriteAt($"                  ", 52 + indent, 8 + startRow);
 
                 WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
                 WriteAt($"Rarity: {item.Rare}", 52 + indent, 4 + startRow);
-                if (item.Power > 0)
+                if (item.Power != 0)
                     WriteAt($"Power:  {item.Power}", 52 + indent, 5 + startRow);
+                if (player.EquippedWeapon == item || player.EquippedArmor == item)
+                    WriteAt($"    [Equiped]", 52 + indent, 8 + startRow);
+
 
                 switch (Console.ReadKey(true).Key)
                 {
@@ -381,6 +397,7 @@
                         player.Inventory[picked].Interact(player);
                         previous = picked;
                         picked = 0;
+                        ReInventory(player.Inventory);
                         break;
                     case ConsoleKey.I:
                         return;

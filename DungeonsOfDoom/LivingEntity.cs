@@ -52,7 +52,7 @@ namespace DungeonsOfDoom
     }
 
 
-    enum ArmorTypes
+    public enum ArmorTypes
     {
         Unarmored = 0,
         Light = 1,
@@ -61,7 +61,7 @@ namespace DungeonsOfDoom
         Etheral = 4,
         Nothing = 5,
     }
-    enum Rarity
+    public enum Rarity
     {
         Common = 0,
         Uncommon = 1,
