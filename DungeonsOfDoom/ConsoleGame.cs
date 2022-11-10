@@ -134,6 +134,7 @@
 
             } while (!(player.X >= 0 && player.X < world.GetLength(0) &&
                     player.Y >= 0 && player.Y < world.GetLength(1)));
+            ClearBelow();
         }
 
         /// <summary>
