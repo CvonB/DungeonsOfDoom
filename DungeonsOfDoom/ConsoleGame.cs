@@ -26,9 +26,10 @@
 
         private void MoveMonsters()
         {
-            foreach (var monster in Monster.MonsterList)
+            for (int i = 0; i < Monster.MonsterList.Count; i++)
             {
-                monster.MoveMonster(world);
+                Monster monster = Monster.MonsterList[i];
+                monster.MoveMonster(world, player);
             }
         }
 
@@ -101,20 +102,20 @@
                 Monster enemy = room.MonsterInRoom;
                 WriteAt($"You have encountered a ");
                 Console.ForegroundColor = RandomUtils.RarityColor(enemy.Rare);
-                Console.Write($"{ enemy.Type}");
+                Console.Write($"{enemy.Type}");
                 Console.ResetColor();
                 WriteAt($"Press any key to attack (or [R]un if you are scared)", 0, 7);
                 for (int i = 0; i < enemy.Ascii.Length; i++)
                 {
 
-                    WriteAt(enemy.Ascii[i], 60, 2+i);
+                    WriteAt(enemy.Ascii[i], 60, 2 + i);
                 }
                 if (Console.ReadKey(true).Key == ConsoleKey.R)
                     Flee();
                 else
                 {
                     ClearBelow();
-                    Combat(player, enemy);
+                    Combat(player, enemy, true);
                     if (!enemy.IsAlive)
                     {
                         room.MonsterInRoom = null;
@@ -160,7 +161,7 @@
         /// Takes player inventory and for each stackable item it will remove duplicates and add to the first instance's count.
         /// </summary>
         /// <param name="inventory"></param>
-        private void StackItem(List<ICarryable> inventory)
+        private static void StackItem(List<ICarryable> inventory)
         {
 
             ICarryable tmpItem = null;
@@ -393,7 +394,7 @@
                 WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
                 WriteAt($"Rarity: ", 52 + indent, 4 + startRow);
                 Console.ForegroundColor = RandomUtils.RarityColor(item.Rare);
-                WriteAt($"{item.Rare}",60 + indent, 4 + startRow);
+                WriteAt($"{item.Rare}", 60 + indent, 4 + startRow);
                 Console.ResetColor();
                 if (item.Power != 0)
                     WriteAt($"Power:  {item.Power}", 52 + indent, 5 + startRow);
@@ -486,21 +487,43 @@
         /// </summary>
         /// <param name="player"></param>
         /// <param name="monster"></param>
-        public void Combat(LivingEntity player, Monster monster)
+        public static void Combat(LivingEntity player, Monster monster, bool playerAttacked)
         {
-            WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
-            if (monster.IsAlive)
+            if (playerAttacked)
             {
-                WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 7);
-                WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 8);
+
+                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
+                if (monster.IsAlive)
+                {
+                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 7);
+                    WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 8);
+                }
+                else
+                {
+                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 7);
+                    player.Inventory.AddRange(monster.Inventory);
+                    player.Inventory.Add(monster);
+                    StackItem(player.Inventory);
+                }
             }
             else
             {
-                WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 7);
-                player.Inventory.AddRange(monster.Inventory);
-                player.Inventory.Add(monster);
-                StackItem(player.Inventory);
+                WriteAt($"{monster.Name} moved from the next room and damaged you for {monster.Attack(player)} damage.");
+                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.",0,7);
+
+                if (monster.IsAlive)
+                {
+                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 8);
+                }
+                else
+                {
+                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 8);
+                    player.Inventory.AddRange(monster.Inventory);
+                    player.Inventory.Add(monster);
+                    StackItem(player.Inventory);
+                }
             }
+
         }
     }
 

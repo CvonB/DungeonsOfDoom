@@ -23,14 +23,14 @@
             MonsterList.Add(this);
         }
 
-        public void MoveMonster(Room[,] world)
+        public void MoveMonster(Room[,] world, Player player)
         {
             int newX = X, newY = Y;
-            bool inbounds = true , occupied = true;
+            bool inbounds = true, occupied = true;
             do
             {
                 inbounds = true;
-                occupied= false;
+                occupied = false;
                 newX = this.X;
                 newY = this.Y;
                 switch (Random.Shared.Next(0, 5))
@@ -43,11 +43,11 @@
 
 
                 if (newX >= 0 && newX < world.GetLength(0))
-                    inbounds= false;
+                    inbounds = false;
                 else
                     inbounds = true;
-                if (newY >= 0 && newY < world.GetLength(1))
-                    inbounds= false;
+                if (newY >= 0 && newY < world.GetLength(1) && !inbounds)
+                    inbounds = false;
                 else
                     inbounds = true;
             } while (inbounds);
@@ -58,11 +58,17 @@
 
             if (!occupied)
             {
-
-            world[newX, newY].MonsterInRoom= this;
-            world[X,Y].MonsterInRoom = null; 
-            X = newX;
-            Y = newY;
+                if (player.X == newX && player.Y == newY)
+                {
+                    ConsoleGame.Combat(player, this, false);
+                }
+                else
+                {
+                    world[newX, newY].MonsterInRoom = this;
+                    world[X, Y].MonsterInRoom = null;
+                    X = newX;
+                    Y = newY;
+                }
             }
 
         }
