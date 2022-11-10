@@ -352,9 +352,9 @@
                 WriteAt("|", 50 + indent, i);
                 WriteAt("|", 70 + indent, i);
                 }
-                WriteAt($"Type:            ", 52 + indent, 3+ startRow);
-                WriteAt($"Power:           ", 52 + indent, 4+ startRow);
-                WriteAt($"Rarity:          ", 52 + indent, 5 + startRow);
+                WriteAt($"Type:             ", 52 + indent, 3+ startRow);
+                WriteAt($"Power:            ", 52 + indent, 4+ startRow);
+                WriteAt($"Rarity:           ", 52 + indent, 5 + startRow);
 
                 WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
                 WriteAt($"Power:  {item.Power}", 52 + indent, 4 + startRow);
