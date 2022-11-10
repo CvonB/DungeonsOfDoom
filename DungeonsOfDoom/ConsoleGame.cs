@@ -16,11 +16,20 @@
             {
                 ClearBelow();
                 EnterRoom();
+                MoveMonsters();
                 DisplayWorld();
                 DisplayStats();
                 AskForMovement();
             } while (player.IsAlive && Monster.MonsterCounter > 0);
             GameOver();
+        }
+
+        private void MoveMonsters()
+        {
+            foreach (var monster in Monster.MonsterList)
+            {
+                monster.MoveMonster(world);
+            }
         }
 
 

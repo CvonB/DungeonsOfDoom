@@ -23,6 +23,50 @@
             MonsterList.Add(this);
         }
 
+        public void MoveMonster(Room[,] world)
+        {
+            int newX = X, newY = Y;
+            bool inbounds = true , occupied = true;
+            do
+            {
+                inbounds = true;
+                occupied= false;
+                newX = this.X;
+                newY = this.Y;
+                switch (Random.Shared.Next(0, 5))
+                {
+                    case 0: newX++; break;
+                    case 1: newX--; break;
+                    case 2: newY++; break;
+                    case 3: newY--; break;
+                }
+
+
+                if (newX >= 0 && newX < world.GetLength(0))
+                    inbounds= false;
+                else
+                    inbounds = true;
+                if (newY >= 0 && newY < world.GetLength(1))
+                    inbounds= false;
+                else
+                    inbounds = true;
+            } while (inbounds);
+            if (world[newX, newY].MonsterInRoom != null)
+                occupied = true;
+            else if (world[newX, newY].ItemInRoom != null)
+                occupied = true;
+
+            if (!occupied)
+            {
+
+            world[newX, newY].MonsterInRoom= this;
+            world[X,Y].MonsterInRoom = null; 
+            X = newX;
+            Y = newY;
+            }
+
+        }
+
         public override int Health
         {
             get => base.Health;
@@ -87,7 +131,7 @@
         {
 
             EntityColor = ConsoleColor.DarkYellow;
-            Ascii = "      .-.\r\n     (o.o)\r\n      |=|\r\n     __|__\r\n   //.=|=.\\\\\r\n  // .=|=. \\\\\r\n  \\\\ .=|=. //\r\n   \\\\(_=_)//\r\n    (:| |:)\r\n     || ||\r\n     () ()\r\n     || ||\r\n     || ||\r\n    ==' '==".Split(new string[] { "\r\n", "\r", "\n" },StringSplitOptions.None);
+            Ascii = "      .-.\r\n     (o.o)\r\n      |=|\r\n     __|__\r\n   //.=|=.\\\\\r\n  // .=|=. \\\\\r\n  \\\\ .=|=. //\r\n   \\\\(_=_)//\r\n    (:| |:)\r\n     || ||\r\n     () ()\r\n     || ||\r\n     || ||\r\n    ==' '==".Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         }
 
     }
