@@ -24,6 +24,23 @@
             GameOver();
         }
 
+        static int origRow;
+        static int origCol;
+
+        static void WriteAt(string s, int x, int y)
+        {
+            try
+            {
+                Console.SetCursorPosition(origCol + x, origRow + y);
+                Console.Write(s);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+            }
+        }
+
         /// <summary>
         /// Writes s in column x and row y in console.
         /// </summary>
