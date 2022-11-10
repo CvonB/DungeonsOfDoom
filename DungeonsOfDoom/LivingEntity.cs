@@ -8,7 +8,7 @@ namespace DungeonsOfDoom
 {
     abstract internal class LivingEntity
     {
-        public int Health { get; set; }
+        virtual public int Health { get; set; }
         public List<Item> Inventory { get; set; } = new List<Item>();
         public bool IsAlive { get { return Health > 0; } }
         public int X { get; set; }
@@ -34,7 +34,7 @@ namespace DungeonsOfDoom
         /// <returns></returns>
         public int Attack(LivingEntity opponent)
         {
-            double damage = Power - opponent.Power; //Double för att kunna utföra matematiska beräkningar
+            double damage = Power; //Double för att kunna utföra matematiska beräkningar
             if (EquipedWeapon.StrongAgainst == opponent.EquipedArmor.ArmorType)
                 damage *= 1.5;
             if(Random.Shared.Next(0,100) < CritChance)

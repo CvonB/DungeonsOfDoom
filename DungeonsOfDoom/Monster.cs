@@ -10,6 +10,8 @@
             Rare = Rarity.Common;
             EquipedWeapon = new Unarmed();
             EquipedArmor = new Unarmored();
+            MonsterList.Add (this);
+
         }
 
         public Monster(string name, int health, Rarity rare)
@@ -18,7 +20,22 @@
             Health = health;
             HasItem();
             Rare = rare;
+            MonsterList.Add (this);
         }
+
+        public override int Health
+        {
+            get => base.Health;
+            set
+            {
+                base.Health = value;
+                if (base.Health <= 0)
+                    MonsterList.Remove(this);
+            }
+        }
+
+        public static int MonsterCounter => MonsterList.Count;
+        public static List<Monster> MonsterList { get; private set; } = new List<Monster>();
 
         public Rarity Rare { get; set; }
 
@@ -45,7 +62,7 @@
     {
         public Skeleton() : base("Skeleton", 30)
         {
-            
+
             EntityColor = ConsoleColor.DarkYellow;
             Ascii = "\t\t\t\t         _,.-------.,_\r\n\t\t\t\t     ,;~'             '~;,\r\n\t\t\t\t   ,;                     ;,\r\n\t\t\t\t  ;                         ;\r\n\t\t\t\t ,'                         ',\r\n\t\t\t\t,;                           ;,\r\n\t\t\t\t; ;      .           .      ; ;\r\n\t\t\t\t| ;   ______       ______   ; |\r\n\t\t\t\t|  `/~\"     ~\" . \"~     \"~\\'  |\r\n\t\t\t\t|  ~  ,-~~~^~, | ,~^~~~-,  ~  |\r\n\t\t\t\t |   |        }:{        |   |\r\n\t\t\t\t |   l       / | \\       !   |\r\n\t\t\t\t .~  (__,.--\" .^. \"--.,__)  ~.\r\n\t\t\t\t |     ---;' / | \\ `;---     |\r\n\t\t\t\t  \\__.       \\/^\\/       .__/\r\n\t\t\t\t   V| \\                 / |V\r\n\t\t\t\t    | |T~\\___!___!___/~T| |\r\n\t\t\t\t    | |`IIII_I_I_I_IIII'| |\r\n\t\t\t\t    |  \\,III I I I III,/  |\r\n\t\t\t\t     \\   `~~~~~~~~~~'    /\r\n\t\t\t\t       \\   .       .   /     \r\n\t\t\t\t         \\.    ^    ./\r\n\t\t\t\t           ^~~~^~~~^";
         }

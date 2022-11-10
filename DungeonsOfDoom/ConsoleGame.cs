@@ -11,7 +11,7 @@
             Console.CursorVisible = false;
             CreatePlayer();
             CreateWorld();
-
+            
             do
             {
                 Console.Clear();
@@ -20,7 +20,7 @@
                 DisplayWorld();
                 DisplayStats();
                 AskForMovement();
-            } while (player.IsAlive);
+            } while (player.IsAlive && Monster.MonsterCounter > 0);
             GameOver();
         }
 
@@ -166,6 +166,7 @@
         private void CreateWorld()
         {
             int notOnPlayer = 0;
+            Monster.MonsterList.Clear();
             world = new Room[20, 5];
             for (int y = 0; y < world.GetLength(1); y++)
             {
@@ -278,6 +279,7 @@
         {
             WriteAt($"Health: {player.Health}", 40, 0);
             WriteAt($"[I]nventory:", 40, 1);
+            WriteAt($"Monster count: {Monster.MonsterCounter}", 40, 2);
         }
 
         /// <summary>
@@ -308,7 +310,14 @@
         private void GameOver()
         {
             Console.Clear();
-            Console.WriteLine("Game over...");
+            if (Monster.MonsterCounter > 0)
+            {
+                Console.WriteLine("Game over...");
+            }
+            else
+            {
+                Console.WriteLine("You finished the level.");
+            }
             Console.ReadKey();
             Play();
         }
