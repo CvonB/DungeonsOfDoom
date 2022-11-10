@@ -129,7 +129,7 @@ namespace DungeonsOfDoom
     class Unarmored : Armor    {
         public Unarmored() : base("Heavy Mail", ArmorTypes.Unarmored)
         {
-
+            
         }
     }
     class HeavyMail : Armor    {

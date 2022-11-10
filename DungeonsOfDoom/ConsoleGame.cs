@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace DungeonsOfDoom
+﻿namespace DungeonsOfDoom
 {
     class ConsoleGame
     {
@@ -23,6 +21,18 @@ namespace DungeonsOfDoom
             } while (player.IsAlive);
             GameOver();
         }
+
+        /// <summary>
+        /// Returns a random rarity.
+        /// </summary>
+        /// <returns></returns>
+        public Rarity RandomRarity()
+        {
+            Array values = Enum.GetValues(typeof(Rarity));
+            Random random = new Random();
+            return (Rarity)values.GetValue(random.Next(values.Length));
+        }
+
 
         /// <summary>
         /// Checks whether the room that the player is located in includes either an item or monster. 
