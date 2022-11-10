@@ -313,8 +313,8 @@
         private void InventoryMove(int picked)
         {
             int previous = picked;
-            //if (player.Inventory.Count == 0)
-            //    return;
+            if (player.Inventory.Count == 0)
+                return;
             while (true)
             {
                 Item item = player.Inventory[picked];
