@@ -14,17 +14,17 @@ namespace DungeonsOfDoom
         public int X { get; set; }
         public int Y { get; set; }
         public ConsoleColor EntityColor { get; set; }
-        public int Power => EquipedWeapon.Power;
+        public int Power => EquippedWeapon.Power;
         public string Name { get; set; }
         public int CritChance { get; set; }
         /// <summary>
         /// Current item affecting entity damage.
         /// </summary>
-        public Weapon EquipedWeapon { get; set; }
+        public Weapon EquippedWeapon { get; set; }
         /// <summary>
         /// Current item reducing taken damage by entity.
         /// </summary>
-        public Armor EquipedArmor { get; set; }
+        public Armor EquippedArmor { get; set; }
 
         /// <summary>
         /// Makes entity attack a designated opponent. Damage is affected by entity's equiped weapon
@@ -35,7 +35,7 @@ namespace DungeonsOfDoom
         public int Attack(LivingEntity opponent)
         {
             double damage = Power; //Double för att kunna utföra matematiska beräkningar
-            if (EquipedWeapon.StrongAgainst == opponent.EquipedArmor.ArmorType)
+            if (EquippedWeapon.StrongAgainst == opponent.EquippedArmor.ArmorType)
                 damage *= 1.5;
             if(Random.Shared.Next(0,100) < CritChance)
                 damage *= 2;

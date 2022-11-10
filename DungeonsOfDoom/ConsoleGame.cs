@@ -324,7 +324,7 @@
                     tmp = $"{item.Count}x";
                 else
                 {
-                    if (player.EquipedWeapon == item || player.EquipedArmor == item)
+                    if (player.EquippedWeapon == item || player.EquippedArmor == item)
                         tmp = $"{tmp} [Equiped]";
                 }
                 WriteAt($"{item.Name} {tmp}", indent, i+ startRow);

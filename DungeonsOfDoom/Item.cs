@@ -14,7 +14,7 @@
             Rare = rare;
         }
 
-
+        public abstract void Use(LivingEntity user);
         public string Name { get; set; }
 
         //public bool Consumable => Type == "Consumable";
@@ -57,6 +57,10 @@
         // Health - power*Damage
 
         public ArmorTypes StrongAgainst { get; set; }
+        public override void Use(LivingEntity user)
+        {
+            user.EquippedWeapon= this;
+        }
     }
 
 
@@ -121,6 +125,10 @@
             Power = 0;
             ArmorType = type;
         }
+        public override void Use(LivingEntity user)
+        {
+            user.EquippedArmor = this;
+        }
 
         public ArmorTypes ArmorType { get; set; }
     }
@@ -148,6 +156,11 @@
         {
             Stackable = true;
             Power = 5;
+        }
+        // Nedan use borde flyttas ner till subclass "healing items" för att sedan kunna ha consumables som ger andra effekter.
+        public override void Use(LivingEntity user)
+        {
+            user.Health += Power;
         }
     }
     #endregion
