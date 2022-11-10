@@ -290,9 +290,9 @@
 
         private void ClearBelow()
         {
-            for (int i = world.GetLength(1); i < 15; i++)
+            for (int i = world.GetLength(1); i < 20; i++)
             {
-                WriteAt("                                                              ", 0, i);
+                WriteAt("                                                                                                                     ", 0, i);
             }
         }
 
@@ -314,7 +314,7 @@
         {
             int indent = 0, startRow = 8;
             int picked = 0;
-            WriteAt("[i]nventory close", indent, startRow-2);
+            WriteAt("[I]nventory close", indent, startRow-2);
             WriteAt("[E]quip", indent, startRow-1);
             for (int i = 0; i < inventory.Count; i++)
             {
