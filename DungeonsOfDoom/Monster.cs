@@ -1,6 +1,6 @@
 ﻿namespace DungeonsOfDoom
 {
-    abstract class Monster : LivingEntity, ICarryable
+    public abstract class Monster : LivingEntity, ICarryable
     {
         public Monster(string name, int health)
         {
@@ -25,6 +25,8 @@
 
         public void MoveMonster(Room[,] world, Player player)
         {
+            if (!IsAlive)
+                return;
             int newX = X, newY = Y;
             bool inbounds = true, occupied = true;
             do
@@ -60,7 +62,7 @@
             {
                 if (player.X == newX && player.Y == newY)
                 {
-                    ConsoleGame.Combat(player, this, false);
+                    Program.game.Combat(player, this, false);
                 }
                 else
                 {
@@ -72,6 +74,7 @@
             }
 
         }
+
 
         public override int Health
         {
@@ -85,6 +88,7 @@
                 }
             }
         }
+
 
         public override string Name
         {
@@ -122,7 +126,7 @@
         {
             int percentage = Random.Shared.Next(0, 100);
             if (percentage < 20)
-                Inventory.Add(ConsoleGame.RandomItem());
+                Inventory.Add(RandomUtils.RandomItem());
             //else if (percentage < 20)
             //    Inventory.Add(new Item("Common Item"));
         }

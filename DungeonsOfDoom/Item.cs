@@ -1,6 +1,6 @@
 ﻿namespace DungeonsOfDoom
 {
-    interface ICarryable
+    public interface ICarryable
     {
         public string Name { get; set; }
         public string Type { get; }
@@ -15,7 +15,7 @@
 
     }
 
-    abstract class Item : ICarryable
+    public abstract class Item : ICarryable
     {
         public Item(string name)
         {
@@ -31,7 +31,7 @@
         }
 
         public virtual void Interact(LivingEntity user) { }
-        public string Name { get => _name; set => _name = $"{Rare} {value}"; }
+        public string Name { get => $"{this.Rare} {_name}"; set => _name = value; }
         private string _name;
 
         //public bool Consumable => Type == "Consumable";
@@ -57,23 +57,24 @@
         public int Power
         {
             get => _power;
-            set => _power = value + (1 * (int)Rare);
+            set => _power = value + (1 * (int)this.Rare);
         }
 
         int _power;
     }
     #region Weapons
-    abstract class Weapon : Item
+    public abstract class Weapon : Item
     {
 
         public Weapon(string weaponType, int power) : base(weaponType)
         {
             Power = power;
         }
-        public Weapon(string weaponType) : base(weaponType)
+        public Weapon(string weaponType, int power, Rarity rare) : base(weaponType,rare)
         {
-            Power = 1;
+            Power = power;
         }
+
 
 
         // if Armor = StrongAgainst > Damage = 1.5 else Damage 1
@@ -89,22 +90,22 @@
     }
 
 
-    class Unarmed : Weapon
+    public class Unarmed : Weapon
     {
-        public Unarmed() : base("Your fists", 10)
+        public Unarmed() : base("Your fists", 0, Rarity.Common)
         {
 
             StrongAgainst = ArmorTypes.Nothing;
         }
 
-        public Unarmed(int power) : base("Your fists", power)
+        public Unarmed(int power) : base("Your fists", power, Rarity.Common)
         {
             StrongAgainst = ArmorTypes.Nothing;
 
         }
     }
 
-    class Sword : Weapon
+    public class Sword : Weapon
     {
         public Sword() : base("Sword", 15)
         {
@@ -118,7 +119,7 @@
         }
     }
 
-    class Mace : Weapon
+    public class Mace : Weapon
     {
         public Mace(int power) : base("Heavy Mace", power)
         {
@@ -133,7 +134,7 @@
         }
     }
 
-    class Spear : Weapon
+    public class Spear : Weapon
     {
         public Spear() : base("Spear", 15)
         {
@@ -149,7 +150,7 @@
     #endregion
 
     #region Armor
-    class Armor : Item
+    public class Armor : Item
     {
         public Armor(string armorName, ArmorTypes type) : base(armorName)
         {
@@ -176,7 +177,7 @@
     #endregion
 
     #region Consumables
-    class Consumable : Item
+    public class Consumable : Item
     {
         public Consumable() : base("Health Potion")
         {

@@ -1,6 +1,6 @@
 ﻿namespace DungeonsOfDoom
 {
-    class Player : LivingEntity
+    public class Player : LivingEntity
     {
         public Player()
         {
@@ -8,7 +8,7 @@
             X = 0;
             Y = 0;
             EntityColor = ConsoleColor.Green;
-            EquippedWeapon = new Unarmed();
+            EquippedWeapon = new Unarmed(10);
             EquippedArmor = new Armor("Unarmored",ArmorTypes.Unarmored);
             CritChance = 10;
         }

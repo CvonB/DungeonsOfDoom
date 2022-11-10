@@ -14,8 +14,19 @@ namespace DungeonsOfDoom
         /// <returns></returns>
         public static Rarity RandomRarity()
         {
-            int tmp = Random.Shared.Next(0,Enum.GetNames(typeof(Rarity)).Length);
-            return (Rarity)tmp;
+            switch (Random.Shared.Next(0,100))
+            {
+                case < 6:
+                    return Rarity.Legendary;
+                case < 18:
+                    return Rarity.Epic;
+                case < 40:
+                    return Rarity.Rare;
+                case < 70:
+                    return Rarity.Uncommon;
+                default:
+                    return Rarity.Common;
+            }
         }
 
         /// <summary>
@@ -51,6 +62,85 @@ namespace DungeonsOfDoom
             }
 
         }
+
+        /// <summary>
+        /// Creates random int between 0 and func: tableOfItems length. Then calls func:tableOfItems and manipulates returned item instance. 
+        /// </summary>
+        /// <returns></returns>
+        public static Item RandomItem()
+        {
+            int rand;
+            switch (Random.Shared.Next(0,100))
+            {
+                case < 30:
+                    rand = new Random().Next(0, tableOfWeapons.Length);
+                    return tableOfWeapons[rand]();
+                case < 60:
+                    rand = new Random().Next(0, tableOfArmors.Length);
+                    return tableOfArmors[rand]();
+                default:
+                    rand = new Random().Next(0, tableOfConsumables.Length);
+                    return tableOfConsumables[rand]();
+
+
+            }
+        }
+
+        /// <summary>
+        /// Returns a new Weapon instance by given index.
+        /// </summary>
+        private static Func<Item>[] tableOfWeapons =
+        {
+            () => new Mace(),
+            () => new Sword(),
+            () => new Spear()
+        };
+        /// <summary>
+        /// Returns a new Weapon instance by given index.
+        /// </summary>
+        private static Func<Item>[] tableOfArmors =
+        {
+            () => new Mace(),
+            () => new Sword(),
+            () => new Spear()
+        };
+        /// <summary>
+        /// Returns a new Weapon instance by given index.
+        /// </summary>
+        private static Func<Item>[] tableOfConsumables =
+        {
+            () => new Mace(),
+            () => new Sword(),
+            () => new Spear()
+        };
+
+        /// <summary>
+        /// Creates random int between 0 and func: tableOfMonster length. Then calls func:tableOfMonster and manipulates returned Monster instance. 
+        /// </summary>
+        /// <returns></returns>
+        public static Monster RandomMonster(int x, int y)
+
+        {
+            var rand = new Random().Next(0, tableOfMonsters.Length);
+            Monster newMonster = tableOfMonsters[rand]();
+            newMonster.X = x;
+            newMonster.Y = y;
+            rand = new Random().Next(-3, 3);
+            newMonster.Health += rand;
+            return newMonster;
+        }
+
+        /// <summary>
+        /// Returns a new Monster instance by given index.
+        /// </summary>
+        private static Func<Monster>[] tableOfMonsters =
+        {
+            () => new Ghost(),
+            () => new Skeleton(),
+            () => new Beast(),
+            () => new Zombie(),
+        };
+
     }
 
 }

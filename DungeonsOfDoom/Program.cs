@@ -1,10 +1,10 @@
 ﻿namespace DungeonsOfDoom
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+            static public ConsoleGame game = new ConsoleGame();
+        public static void Main(string[] args)
         {
-            ConsoleGame game = new ConsoleGame();
             game.Play();
         }
     }

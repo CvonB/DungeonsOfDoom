@@ -1,6 +1,6 @@
 ﻿namespace DungeonsOfDoom
 {
-    class ConsoleGame
+    public class ConsoleGame
     {
         Room[,] world;
         Player player;
@@ -24,54 +24,8 @@
             GameOver();
         }
 
-        private void MoveMonsters()
-        {
-            for (int i = 0; i < Monster.MonsterList.Count; i++)
-            {
-                Monster monster = Monster.MonsterList[i];
-                monster.MoveMonster(world, player);
-            }
-        }
 
-
-
-        /// <summary>
-        /// Writes s in column x and row y in console.
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        static void WriteAt(string s, int x, int y)
-        {
-            try
-            {
-                Console.SetCursorPosition(origCol + x, origRow + y);
-                Console.Write(s);
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Console.Clear();
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        static void WriteAt(string s)
-        {
-            try
-            {
-                Console.SetCursorPosition(origCol + 0, origRow + 6);
-                Console.Write(s);
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Console.Clear();
-                Console.WriteLine(e.Message);
-            }
-        }
-
-
-
-
+        #region Interactions
         /// <summary>
         /// Checks whether the room that the player is located in includes either an item or monster. 
         /// If item the player will loot the item and it will be added to player.inventory.
@@ -88,8 +42,10 @@
                 room.ItemInRoom = null;
                 StackItem(player.Inventory);
             }
-            else if (room.MonsterInRoom != null)
+            else if (room.MonsterInRoom != null )
             {
+                if (!room.MonsterInRoom.IsAlive)
+                    return;
                 Monster enemy = room.MonsterInRoom;
                 WriteAt($"You have encountered a ");
                 Console.ForegroundColor = RandomUtils.RarityColor(enemy.Rare);
@@ -149,6 +105,51 @@
         }
 
         /// <summary>
+        /// Makes player attack monster. If monster lives it will then attack back, else monsters inventory will be moved to players inventory.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="monster"></param>
+        public  void Combat(LivingEntity player, Monster monster, bool playerAttacked)
+        {
+            ClearBelow();
+            if (playerAttacked)
+            {
+
+                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
+                if (monster.IsAlive)
+                {
+                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 7);
+                    WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 8);
+                }
+                else
+                {
+                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 7);
+                    player.Inventory.AddRange(monster.Inventory);
+                    player.Inventory.Add(monster);
+                    StackItem(player.Inventory);
+                }
+            }
+            else
+            {
+                WriteAt($"{monster.Name} moved from the next room and damaged you for {monster.Attack(player)} damage.");
+                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.",0,7);
+
+                if (monster.IsAlive)
+                {
+                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 8);
+                }
+                else
+                {
+                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 8);
+                    player.Inventory.AddRange(monster.Inventory);
+                    player.Inventory.Add(monster);
+                    StackItem(player.Inventory);
+                }
+            }
+
+        }
+
+        /// <summary>
         /// Takes player inventory and for each stackable item it will remove duplicates and add to the first instance's count.
         /// </summary>
         /// <param name="inventory"></param>
@@ -175,6 +176,37 @@
                 }
             }
         }
+        /// <summary>
+        /// Waits for the player to input an arrowkey to move or press I to open inventory
+        /// </summary>
+        private void AskForMovement()
+        {
+            bool isValidKey = false;
+            do
+            {
+                int newX = player.X;
+                int newY = player.Y;
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.RightArrow: newX++; isValidKey = true; break;
+                    case ConsoleKey.LeftArrow: newX--; isValidKey = true; break;
+                    case ConsoleKey.UpArrow: newY--; isValidKey = true; break;
+                    case ConsoleKey.DownArrow: newY++; isValidKey = true; break;
+                    case ConsoleKey.I: Inventory(player.Inventory); break;
+                    default: isValidKey = false; break;
+                }
+                if (newX >= 0 && newX < world.GetLength(0) &&
+                    newY >= 0 && newY < world.GetLength(1))
+                {
+                    player.X = newX;
+                    player.Y = newY;
+                }
+                else
+                    isValidKey = false;
+            } while (!isValidKey);
+        }
+        #endregion
 
         #region Creation
         /// <summary>
@@ -203,69 +235,65 @@
 
                     if (percentage < 10 && notOnPlayer != 0)
                     {
-                        world[x, y].MonsterInRoom = RandomMonster(x, y);
+                        world[x, y].MonsterInRoom = RandomUtils.RandomMonster(x, y);
 
                     }
                     else if (percentage < 20 && notOnPlayer != 0)
-                        world[x, y].ItemInRoom = RandomItem();
+                        world[x, y].ItemInRoom = RandomUtils.RandomItem();
                     notOnPlayer++;
                 }
             }
         }
         #endregion
 
-        #region RandomGen
-
-        /// <summary>
-        /// Creates random int between 0 and func: tableOfItems length. Then calls func:tableOfItems and manipulates returned item instance. 
-        /// </summary>
-        /// <returns></returns>
-        public static Item RandomItem()
-        {
-            var rand = new Random().Next(0, tableOfItems.Length);
-            return tableOfItems[rand]();
-        }
-
-        /// <summary>
-        /// Returns a new Item instance by given index.
-        /// </summary>
-        private static Func<Item>[] tableOfItems =
-        {
-            () => new Consumable(),
-            () => new Mace(),
-            () => new Sword(),
-            () => new Spear()
-        };
-
-        /// <summary>
-        /// Creates random int between 0 and func: tableOfMonster length. Then calls func:tableOfMonster and manipulates returned Monster instance. 
-        /// </summary>
-        /// <returns></returns>
-        public static Monster RandomMonster(int x, int y)
-
-        {
-            var rand = new Random().Next(0, tableOfMonsters.Length);
-            Monster newMonster = tableOfMonsters[rand]();
-            newMonster.X = x;
-            newMonster.Y = y;
-            rand = new Random().Next(-3, 3);
-            newMonster.Health += rand;
-            return newMonster;
-        }
-
-        /// <summary>
-        /// Returns a new Monster instance by given index.
-        /// </summary>
-        private static Func<Monster>[] tableOfMonsters =
-        {
-            () => new Ghost(),
-            () => new Skeleton(),
-            () => new Beast(),
-            () => new Zombie(),
-        };
-        #endregion
-
         #region Display
+        /// <summary>
+        /// Writes s in column x and row y in console.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        static void WriteAt(string s, int x, int y)
+        {
+            try
+            {
+                Console.SetCursorPosition(origCol + x, origRow + y);
+                Console.Write(s);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+            }
+        }
+        /// <summary>
+        /// Writes s in column 0 and row 6 in console.
+        /// </summary>
+        /// <param name="s"></param>
+        static void WriteAt(string s)
+        {
+            try
+            {
+                Console.SetCursorPosition(origCol + 0, origRow + 7);
+                Console.Write(s);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                Console.Clear();
+                Console.WriteLine(e.Message);
+            }
+        }
+        /// <summary>
+        /// Moves all the monsters in the MonsterList to a random location offset by 1
+        /// </summary>
+        private void MoveMonsters()
+        {
+            for (int i = 0; i < Monster.MonsterList.Count; i++)
+            {
+                Monster monster = Monster.MonsterList[i];
+                monster.MoveMonster(world, player);
+            }
+        }
         /// <summary>
         /// Prints world[] in the console.
         /// </summary>
@@ -284,6 +312,8 @@
                     }
                     else if (room.MonsterInRoom != null)
                     {
+                        if (!room.MonsterInRoom.IsAlive)
+                            break;
                         Console.ForegroundColor = room.MonsterInRoom.EntityColor;
                         WriteAt("M", x, y);
                         Console.ResetColor();
@@ -314,9 +344,12 @@
         /// </summary>
         private void DisplayStats()
         {
-            WriteAt($"Health: {player.Health}", 40, 0);
-            WriteAt($"[I]nventory:", 40, 1);
-            WriteAt($"Monster count: {Monster.MonsterCounter}", 40, 2);
+            int height = 0;
+            WriteAt($"Health: {player.Health}", 40, height++);
+            WriteAt($"Power:  {player.Power + player.EquippedWeapon.Power}", 40, height++);
+            WriteAt($"Crit:   {player.CritChance + player.EquippedWeapon.CritChance}", 40, height++);
+            WriteAt($"Monster count: {Monster.MonsterCounter}", 40, height++);
+            WriteAt($"[I]nventory:", 0, 6);
         }
 
         /// <summary>
@@ -325,6 +358,7 @@
         /// <param name="inventory"></param>
         private void Inventory(List<ICarryable> inventory)
         {
+            ClearBelow();
             int indent = 0, startRow = 8;
             int picked = 0;
             WriteAt("[I]nventory close", indent, startRow - 2);
@@ -383,15 +417,15 @@
                 WriteAt($"                  ", 52 + indent, 6 + startRow);
                 WriteAt($"                  ", 52 + indent, 8 + startRow);
 
-                WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
-                WriteAt($"Rarity: ", 52 + indent, 4 + startRow);
+                WriteAt($"Type:    {item.Type}", 52 + indent, 3 + startRow);
+                WriteAt($"Rarity:  ", 52 + indent, 4 + startRow);
                 Console.ForegroundColor = RandomUtils.RarityColor(item.Rare);
-                WriteAt($"{item.Rare}", 60 + indent, 4 + startRow);
+                WriteAt($"{item.Rare}", 61 + indent, 4 + startRow);
                 Console.ResetColor();
                 if (item.Power != 0)
-                    WriteAt($"Power:  {item.Power}", 52 + indent, 5 + startRow);
+                    WriteAt($"Power:   {item.Power}", 52 + indent, 5 + startRow);
                 if (item.CritChance > 0)
-                    WriteAt($"Critchance:  {item.CritChance}%", 52 + indent, 6 + startRow);
+                    WriteAt($"Crit:    {item.CritChance}%", 52 + indent, 6 + startRow);
                 if (player.EquippedWeapon == item || player.EquippedArmor == item)
                     WriteAt($"    [Equiped]", 52 + indent, 8 + startRow);
 
@@ -417,6 +451,7 @@
                         previous = picked;
                         picked = 0;
                         ReInventory(player.Inventory);
+                        DisplayStats();
                         break;
                     case ConsoleKey.I:
                         return;
@@ -445,80 +480,7 @@
             Play();
         }
         #endregion
-        /// <summary>
-        /// Waits for the player to input an arrowkey to move or press I to open inventory
-        /// </summary>
-        private void AskForMovement()
-        {
-            bool isValidKey = false;
-            do
-            {
-                int newX = player.X;
-                int newY = player.Y;
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-                switch (keyInfo.Key)
-                {
-                    case ConsoleKey.RightArrow: newX++; isValidKey = true; break;
-                    case ConsoleKey.LeftArrow: newX--; isValidKey = true; break;
-                    case ConsoleKey.UpArrow: newY--; isValidKey = true; break;
-                    case ConsoleKey.DownArrow: newY++; isValidKey = true; break;
-                    case ConsoleKey.I: Inventory(player.Inventory); break;
-                    default: isValidKey = false; break;
-                }
-                if (newX >= 0 && newX < world.GetLength(0) &&
-                    newY >= 0 && newY < world.GetLength(1))
-                {
-                    player.X = newX;
-                    player.Y = newY;
-                }
-                else
-                    isValidKey = false;
-            } while (!isValidKey);
-        }
 
-        /// <summary>
-        /// Makes player attack monster. If monster lives it will then attack back, else monsters inventory will be moved to players inventory.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="monster"></param>
-        public static void Combat(LivingEntity player, Monster monster, bool playerAttacked)
-        {
-            if (playerAttacked)
-            {
-
-                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
-                if (monster.IsAlive)
-                {
-                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 7);
-                    WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 8);
-                }
-                else
-                {
-                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 7);
-                    player.Inventory.AddRange(monster.Inventory);
-                    player.Inventory.Add(monster);
-                    StackItem(player.Inventory);
-                }
-            }
-            else
-            {
-                WriteAt($"{monster.Name} moved from the next room and damaged you for {monster.Attack(player)} damage.");
-                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.",0,7);
-
-                if (monster.IsAlive)
-                {
-                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 8);
-                }
-                else
-                {
-                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 8);
-                    player.Inventory.AddRange(monster.Inventory);
-                    player.Inventory.Add(monster);
-                    StackItem(player.Inventory);
-                }
-            }
-
-        }
     }
 
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DungeonsOfDoom
 {
-    abstract internal class LivingEntity
+    abstract public class LivingEntity
     {
         virtual public int Health { get; set; }
         public List<ICarryable> Inventory { get; set; } = new List<ICarryable>();
