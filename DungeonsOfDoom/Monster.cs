@@ -1,5 +1,7 @@
 ﻿namespace DungeonsOfDoom
 {
+
+
     public abstract class Monster : LivingEntity, ICarryable
     {
         public Monster(string name, int health)
@@ -8,7 +10,7 @@
             Health = health;
             HasItem();
             Rare = RandomUtils.RandomRarity();
-            EquippedWeapon = new Unarmed();
+            EquippedWeapon = new Unarmed(5);
             EquippedArmor = new Armor(RandomUtils.RandomArmor());
             MonsterList.Add(this);
 

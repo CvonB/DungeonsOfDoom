@@ -100,18 +100,20 @@ namespace DungeonsOfDoom
         /// </summary>
         private static Func<Item>[] tableOfArmors =
         {
-            () => new Mace(),
-            () => new Sword(),
-            () => new Spear()
+            () => new Armor("Mail plate",ArmorTypes.Heavy),
+            () => new Armor("Heavy mail plate",ArmorTypes.Heavy,10),
+            () => new Armor("Leather armor",ArmorTypes.Light),
+            () => new Armor("Thick leather armor",ArmorTypes.Light,10),
+            () => new Armor("Heavy chain mail",ArmorTypes.Medium,10),
+            () => new Armor("Chain mail",ArmorTypes.Medium),
+            () => new Armor("your skin but thicker",ArmorTypes.Unarmored,2),
         };
         /// <summary>
         /// Returns a new Weapon instance by given index.
         /// </summary>
         private static Func<Item>[] tableOfConsumables =
         {
-            () => new Mace(),
-            () => new Sword(),
-            () => new Spear()
+            () => new Consumable(),
         };
 
         /// <summary>

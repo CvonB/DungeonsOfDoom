@@ -57,7 +57,7 @@
         public int Power
         {
             get => _power;
-            set => _power = value + (1 * (int)this.Rare);
+            set => _power = value + (2 * (int)this.Rare);
         }
 
         int _power;
@@ -154,7 +154,7 @@
     {
         public Armor(string armorName, ArmorTypes type) : base(armorName)
         {
-            Power = 0;
+            Power = Random.Shared.Next(0, 10);
             ArmorType = type;
         }
         public Armor(string armorName, ArmorTypes type, int power) : base(armorName)

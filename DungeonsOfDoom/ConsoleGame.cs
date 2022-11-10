@@ -118,12 +118,12 @@
                 WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
                 if (monster.IsAlive)
                 {
-                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 7);
-                    WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 8);
+                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 8);
+                    WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 9);
                 }
                 else
                 {
-                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 7);
+                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 8);
                     player.Inventory.AddRange(monster.Inventory);
                     player.Inventory.Add(monster);
                     StackItem(player.Inventory);
@@ -132,15 +132,15 @@
             else
             {
                 WriteAt($"{monster.Name} moved from the next room and damaged you for {monster.Attack(player)} damage.");
-                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.",0,7);
+                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.",0,8);
 
                 if (monster.IsAlive)
                 {
-                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 8);
+                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 9);
                 }
                 else
                 {
-                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 8);
+                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 9);
                     player.Inventory.AddRange(monster.Inventory);
                     player.Inventory.Add(monster);
                     StackItem(player.Inventory);
@@ -312,11 +312,11 @@
                     }
                     else if (room.MonsterInRoom != null)
                     {
-                        if (!room.MonsterInRoom.IsAlive)
-                            break;
                         Console.ForegroundColor = room.MonsterInRoom.EntityColor;
                         WriteAt("M", x, y);
                         Console.ResetColor();
+                        if (!room.MonsterInRoom.IsAlive)
+                            WriteAt(".", x, y);
                     }
                     else if (room.ItemInRoom != null)
                         WriteAt("I", x, y);
@@ -348,6 +348,7 @@
             WriteAt($"Health: {player.Health}", 40, height++);
             WriteAt($"Power:  {player.Power + player.EquippedWeapon.Power}", 40, height++);
             WriteAt($"Crit:   {player.CritChance + player.EquippedWeapon.CritChance}", 40, height++);
+            WriteAt($"Armor:   {player.EquippedArmor.Power}", 40, height++);
             WriteAt($"Monster count: {Monster.MonsterCounter}", 40, height++);
             WriteAt($"[I]nventory:", 0, 6);
         }
