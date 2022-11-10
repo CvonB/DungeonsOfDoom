@@ -69,16 +69,7 @@
             }
         }
 
-        /// <summary>
-        /// Returns a random value in ENUM rarity.
-        /// </summary>
-        /// <returns></returns>
-        public Rarity RandomRarity()
-        {
-            Array values = Enum.GetValues(typeof(Rarity));
-            Random random = new Random();
-            return (Rarity)values.GetValue(random.Next(values.Length));
-        }
+
 
 
         /// <summary>
@@ -241,7 +232,7 @@
         private static Func<Item>[] tableOfItems =
         {
             () => new Consumable(),
-            () => new Axe(),
+            () => new Mace(),
             () => new Sword(),
             () => new Spear()
         };
@@ -389,6 +380,7 @@
                 WriteAt($"Type:             ", 52 + indent, 3 + startRow);
                 WriteAt($"Rarity:           ", 52 + indent, 4 + startRow);
                 WriteAt($"                  ", 52 + indent, 5 + startRow);
+                WriteAt($"                  ", 52 + indent, 6 + startRow);
                 WriteAt($"                  ", 52 + indent, 8 + startRow);
 
                 WriteAt($"Type:   {item.Type}", 52 + indent, 3 + startRow);
@@ -398,6 +390,8 @@
                 Console.ResetColor();
                 if (item.Power != 0)
                     WriteAt($"Power:  {item.Power}", 52 + indent, 5 + startRow);
+                if (item.CritChance > 0)
+                    WriteAt($"Critchance:  {item.CritChance}%", 52 + indent, 6 + startRow);
                 if (player.EquippedWeapon == item || player.EquippedArmor == item)
                     WriteAt($"    [Equiped]", 52 + indent, 8 + startRow);
 

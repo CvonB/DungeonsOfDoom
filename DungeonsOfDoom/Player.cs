@@ -9,7 +9,7 @@
             Y = 0;
             EntityColor = ConsoleColor.Green;
             EquippedWeapon = new Unarmed();
-            EquippedArmor = new Unarmored();
+            EquippedArmor = new Armor("Unarmored",ArmorTypes.Unarmored);
             CritChance = 10;
         }
 

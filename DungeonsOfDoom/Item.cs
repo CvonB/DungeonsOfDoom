@@ -11,6 +11,8 @@
         void Interact() { }
         void Interact(LivingEntity Player) { }
 
+        public int CritChance { get; set; }
+
     }
 
     abstract class Item : ICarryable
@@ -29,7 +31,8 @@
         }
 
         public virtual void Interact(LivingEntity user) { }
-        public string Name { get; set; }
+        public string Name { get => _name; set => _name = $"{Rare} {value}"; }
+        private string _name;
 
         //public bool Consumable => Type == "Consumable";
         /// <summary>
@@ -40,6 +43,7 @@
         /// Returns how many of said Item is in Inventory. Only applicable if Stackable == true.
         /// </summary>
         public int Count { get; set; } = 1;
+        public int CritChance { get; set; }
 
         public Rarity Rare { get; set; }
         /// <summary>
@@ -70,6 +74,7 @@
         {
             Power = 1;
         }
+
 
         // if Armor = StrongAgainst > Damage = 1.5 else Damage 1
         // rand 0-100.
@@ -103,7 +108,8 @@
     {
         public Sword() : base("Sword", 15)
         {
-            StrongAgainst = ArmorTypes.Unarmored;
+            StrongAgainst = ArmorTypes.Light;
+            CritChance = Random.Shared.Next(1, 15);
         }
 
         public Sword(int power) : base("Sword", power)
@@ -112,22 +118,27 @@
         }
     }
 
-    class Axe : Weapon
+    class Mace : Weapon
     {
-        public Axe(int power) : base("Axe", power)
+        public Mace(int power) : base("Heavy Mace", power)
         {
+            CritChance = Random.Shared.Next(1, 15);
 
         }
-        public Axe() : base("Axe", 15)
+        public Mace() : base("Mace", 15)
         {
+            StrongAgainst = ArmorTypes.Heavy;
+            CritChance = Random.Shared.Next(1, 15);
 
         }
     }
 
     class Spear : Weapon
     {
-        public Spear() : base("Regular Spear", 15)
+        public Spear() : base("Spear", 15)
         {
+            StrongAgainst = ArmorTypes.Unarmored;
+            CritChance = Random.Shared.Next(1, 15);
 
         }
         public Spear(int power) : base("Spear", power)
@@ -145,27 +156,22 @@
             Power = 0;
             ArmorType = type;
         }
+        public Armor(string armorName, ArmorTypes type, int power) : base(armorName)
+        {
+            Power = power;
+            ArmorType = type;
+        }
+        public Armor(ArmorTypes type) : base("Monster Item")
+        {
+            Power = 0;
+            ArmorType = type;
+        }
         public override void Interact(LivingEntity user)
         {
             user.EquippedArmor = this;
         }
 
         public ArmorTypes ArmorType { get; set; }
-    }
-
-    class Unarmored : Armor
-    {
-        public Unarmored() : base("Heavy Mail", ArmorTypes.Unarmored)
-        {
-
-        }
-    }
-    class HeavyMail : Armor
-    {
-        public HeavyMail() : base("Heavy Mail", ArmorTypes.Heavy)
-        {
-            Power = 3;
-        }
     }
     #endregion
 

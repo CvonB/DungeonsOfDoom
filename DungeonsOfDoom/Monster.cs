@@ -9,7 +9,7 @@
             HasItem();
             Rare = RandomUtils.RandomRarity();
             EquippedWeapon = new Unarmed();
-            EquippedArmor = new Unarmored();
+            EquippedArmor = new Armor(RandomUtils.RandomArmor());
             MonsterList.Add(this);
 
         }
@@ -103,6 +103,8 @@
 
         }
 
+        public int CritChance { get; set; }
+
         public static int MonsterCounter => MonsterList.Count;
         public static List<Monster> MonsterList { get; private set; } = new List<Monster>();
 
@@ -167,7 +169,7 @@
 
         public Zombie() : base("Zombie", 20)
         {
-            EquippedWeapon = new Axe(15);
+            EquippedWeapon = new Mace(15);
             EntityColor = ConsoleColor.Cyan;
             Ascii = "                        _,--~~~,\r\n                       .'        `.\r\n                       |           ;\r\n                       |           :\r\n                      /_,-==/     .'\r\n                    /'`\\*  ;      :      \r\n                  :'    `-        :      \r\n                  `~*,'     .     :      \r\n                     :__.,._  `;  :      \r\n                     `\\'    )  '  `,     \r\n                         \\-/  '     )     \r\n                         :'          \\ _\r\n                          `~---,-~    `,)\r\n          ___                   \\     /~`\\\r\n    \\---__ `;~~~-------------~~~(| _-'    `,\r\n  ---, ' \\`-._____     _______.---'         \\\r\n \\--- `~~-`,      ~~~~~~                     `,\r\n\\----      )                                   \\\r\n\\----.  __ /                                    `-\r\n \\----'` -~____  \r\n               ~~~~~--------,.___             \r\n                                 ```\\_".Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         }

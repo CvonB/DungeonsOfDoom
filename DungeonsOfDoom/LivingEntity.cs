@@ -43,7 +43,7 @@ namespace DungeonsOfDoom
             double damage = Power + EquippedWeapon.Power; //Double för att kunna utföra matematiska beräkningar
             if (EquippedWeapon.StrongAgainst == opponent.EquippedArmor.ArmorType)
                 damage *= 1.5;
-            if(Random.Shared.Next(0,100) < CritChance)
+            if(Random.Shared.Next(0,100) < (CritChance + EquippedWeapon.CritChance))
                 damage *= 2;
             if (IsAlive)
                 opponent.Health -= (int)Math.Round(damage); //konvererar sedan tillbaka till en int
@@ -54,12 +54,12 @@ namespace DungeonsOfDoom
 
     public enum ArmorTypes
     {
+        Nothing = -1,
         Unarmored = 0,
         Light = 1,
         Medium = 2,
         Heavy = 3,
         Etheral = 4,
-        Nothing = 5,
     }
     public enum Rarity
     {
