@@ -95,6 +95,11 @@
                 Console.Write($"{ enemy.Type}");
                 Console.ResetColor();
                 WriteAt($"Press any key to attack (or [R]un if you are scared)", 0, 7);
+                for (int i = 0; i < enemy.Ascii.Length; i++)
+                {
+
+                    WriteAt(enemy.Ascii[i], 60, 2+i);
+                }
                 if (Console.ReadKey(true).Key == ConsoleKey.R)
                     Flee();
                 else
@@ -293,9 +298,13 @@
 
         private void ClearBelow()
         {
-            for (int i = world.GetLength(1); i < 20; i++)
+            for (int i = world.GetLength(1); i < 25; i++)
             {
                 WriteAt("                                                                                                                     ", 0, i);
+            }
+            for (int i = 0; i < world.GetLength(1); i++)
+            {
+                WriteAt("                                     ", 60, i);
             }
         }
 

@@ -58,7 +58,7 @@
 
         override public Rarity Rare { get; set; }
 
-        public string Ascii { get; set; }
+        public string[] Ascii { get; set; }
 
         public bool Stackable { get; set; }
 
@@ -87,7 +87,7 @@
         {
 
             EntityColor = ConsoleColor.DarkYellow;
-            Ascii = "\t\t\t\t         _,.-------.,_\r\n\t\t\t\t     ,;~'             '~;,\r\n\t\t\t\t   ,;                     ;,\r\n\t\t\t\t  ;                         ;\r\n\t\t\t\t ,'                         ',\r\n\t\t\t\t,;                           ;,\r\n\t\t\t\t; ;      .           .      ; ;\r\n\t\t\t\t| ;   ______       ______   ; |\r\n\t\t\t\t|  `/~\"     ~\" . \"~     \"~\\'  |\r\n\t\t\t\t|  ~  ,-~~~^~, | ,~^~~~-,  ~  |\r\n\t\t\t\t |   |        }:{        |   |\r\n\t\t\t\t |   l       / | \\       !   |\r\n\t\t\t\t .~  (__,.--\" .^. \"--.,__)  ~.\r\n\t\t\t\t |     ---;' / | \\ `;---     |\r\n\t\t\t\t  \\__.       \\/^\\/       .__/\r\n\t\t\t\t   V| \\                 / |V\r\n\t\t\t\t    | |T~\\___!___!___/~T| |\r\n\t\t\t\t    | |`IIII_I_I_I_IIII'| |\r\n\t\t\t\t    |  \\,III I I I III,/  |\r\n\t\t\t\t     \\   `~~~~~~~~~~'    /\r\n\t\t\t\t       \\   .       .   /     \r\n\t\t\t\t         \\.    ^    ./\r\n\t\t\t\t           ^~~~^~~~^";
+            Ascii = "      .-.\r\n     (o.o)\r\n      |=|\r\n     __|__\r\n   //.=|=.\\\\\r\n  // .=|=. \\\\\r\n  \\\\ .=|=. //\r\n   \\\\(_=_)//\r\n    (:| |:)\r\n     || ||\r\n     () ()\r\n     || ||\r\n     || ||\r\n    ==' '==".Split(new string[] { "\r\n", "\r", "\n" },StringSplitOptions.None);
         }
 
     }
@@ -97,7 +97,7 @@
         {
             EquippedWeapon = new Unarmed(15);
             EntityColor = ConsoleColor.Red;
-            Ascii = "\t\t\t      .'``'.      ...\r\n\t\t\t     :o  o `....'`  ;\r\n\t\t\t     `. O         :'\r\n\t\t\t       `':          `.\r\n\t\t\t         `:.          `.\r\n\t\t\t          : `.         `.\r\n\t\t\t         `..'`...       `.\r\n\t\t\t                 `...     `.\r\n\t\t\t                     ``...  `.\r\n\t\t\t                          `````.";
+            Ascii = "       .-.\r\n      ( \" )\r\n   /\\_.' '._/\\\r\n   |         |\r\n    \\       /\r\n     \\    /`\r\n   (__)  /\r\n   `.__.'".Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         }
     }
     class Beast : Monster
@@ -105,6 +105,7 @@
         public Beast() : base("Beast", 15)
         {
             EntityColor = ConsoleColor.Magenta;
+            Ascii = "        _\r\n       / \\      _-'\r\n     _/|  \\-''- _ /\r\n__-' { |          \\\r\n    /             \\\r\n    /       \"o.  |o }\r\n    |            \\ ;\r\n                  ',\r\n       \\_         __\\\r\n         ''-_    \\.//\r\n           / '-____'\r\n          /\r\n        _'\r\n      _-'".Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         }
     }
     class Zombie : Monster
@@ -118,6 +119,7 @@
         {
             EquippedWeapon = new Axe(15);
             EntityColor = ConsoleColor.Cyan;
+            Ascii = "                        _,--~~~,\r\n                       .'        `.\r\n                       |           ;\r\n                       |           :\r\n                      /_,-==/     .'\r\n                    /'`\\*  ;      :      \r\n                  :'    `-        :      \r\n                  `~*,'     .     :      \r\n                     :__.,._  `;  :      \r\n                     `\\'    )  '  `,     \r\n                         \\-/  '     )     \r\n                         :'          \\ _\r\n                          `~---,-~    `,)\r\n          ___                   \\     /~`\\\r\n    \\---__ `;~~~-------------~~~(| _-'    `,\r\n  ---, ' \\`-._____     _______.---'         \\\r\n \\--- `~~-`,      ~~~~~~                     `,\r\n\\----      )                                   \\\r\n\\----.  __ /                                    `-\r\n \\----'` -~____  \r\n               ~~~~~--------,.___             \r\n                                 ```\\_".Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
         }
     }
 }

@@ -101,7 +101,7 @@
 
     class Sword : Weapon
     {
-        public Sword() : base("Sword", 20)
+        public Sword() : base("Sword", 15)
         {
             StrongAgainst = ArmorTypes.Unarmored;
         }
@@ -126,7 +126,7 @@
 
     class Spear : Weapon
     {
-        public Spear() : base("Regular Spear", 10)
+        public Spear() : base("Regular Spear", 15)
         {
 
         }
