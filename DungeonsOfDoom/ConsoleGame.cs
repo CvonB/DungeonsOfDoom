@@ -312,8 +312,10 @@
         /// <param name="inventory"></param>
         private void Inventory(List<Item> inventory)
         {
-            int indent = 0, startRow = 6;
+            int indent = 0, startRow = 8;
             int picked = 0;
+            WriteAt("[i]nventory close", indent, startRow-2);
+            WriteAt("[E]quip", indent, startRow-1);
             for (int i = 0; i < inventory.Count; i++)
             {
                 Item item = inventory[i];
@@ -374,10 +376,10 @@
                             picked++;
                         }
                         break;
-                    case ConsoleKey.U:
+                    case ConsoleKey.E:
                         // lägg Use metoden här
                         break;
-                    case ConsoleKey.E:
+                    case ConsoleKey.I:
                         return;
                 }
 
