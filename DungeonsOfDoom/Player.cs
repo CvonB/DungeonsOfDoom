@@ -8,8 +8,8 @@
             X = 0;
             Y = 0;
             EntityColor = ConsoleColor.Green;
-            EquipedWeapon = new Unarmed();
-            EquipedArmor = new Unarmored();
+            EquippedWeapon = new Unarmed();
+            EquippedArmor = new Unarmored();
             CritChance = 10;
         }
 
