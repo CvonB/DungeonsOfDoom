@@ -56,7 +56,7 @@
         public static int MonsterCounter => MonsterList.Count;
         public static List<Monster> MonsterList { get; private set; } = new List<Monster>();
 
-        public Rarity Rare { get; set; }
+        override public Rarity Rare { get; set; }
 
         public string Ascii { get; set; }
 

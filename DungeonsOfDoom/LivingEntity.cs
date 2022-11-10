@@ -14,7 +14,13 @@ namespace DungeonsOfDoom
         public int X { get; set; }
         public int Y { get; set; }
         public ConsoleColor EntityColor { get; set; }
-        public int Power {get; set; }
+        public int Power
+        {
+            get => _power;
+            set => _power = value + (1 * (int)Rare);
+        }
+        int _power;
+        virtual public Rarity Rare { get; set; }
         public virtual string Name { get; set; }
         public int CritChance { get; set; }
         /// <summary>
@@ -44,6 +50,7 @@ namespace DungeonsOfDoom
             return (int)Math.Round(damage);
         }
     }
+
 
     enum ArmorTypes
     {

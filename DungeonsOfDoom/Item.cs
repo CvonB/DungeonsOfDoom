@@ -10,7 +10,7 @@
         public int Count { get; set; }
         void Interact() { }
         void Interact(LivingEntity Player) { }
-        
+
     }
 
     abstract class Item : ICarryable
@@ -49,7 +49,13 @@
         /// Returns the power of the Item. If weapon, will deal said amount as damage. If armor, will remove said amount from damage
         /// If consumable, will affect player by said amount. Ex heal player by power.
         /// </summary>
-        public int Power { get; set; }
+        public int Power
+        {
+            get => _power;
+            set => _power = value + (1 * (int)Rare);
+        }
+
+        int _power;
     }
     #region Weapons
     abstract class Weapon : Item
@@ -72,7 +78,7 @@
         public ArmorTypes StrongAgainst { get; set; }
         public override void Interact(LivingEntity user)
         {
-            user.EquippedWeapon= this;
+            user.EquippedWeapon = this;
         }
     }
 
