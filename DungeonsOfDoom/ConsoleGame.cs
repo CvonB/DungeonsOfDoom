@@ -384,7 +384,6 @@ namespace DungeonsOfDoom
         private void ReInventory(List<ICarryable> inventory)
         {
             int indent = 0, startRow = 8;
-            int picked = 0;
             ClearBelow();
             WriteAt("[I]nventory close", indent, startRow - 2);
             WriteAt("[E]quip", indent, startRow - 1);

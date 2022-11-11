@@ -109,7 +109,6 @@
 
         }
 
-        public int CritChance { get; set; }
 
         public static int MonsterCounter => MonsterList.Count;
         public static List<Monster> MonsterList { get; private set; } = new List<Monster>();
