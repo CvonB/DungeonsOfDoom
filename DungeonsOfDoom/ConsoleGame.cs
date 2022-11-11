@@ -1,4 +1,6 @@
-﻿namespace DungeonsOfDoom
+﻿using System;
+
+namespace DungeonsOfDoom
 {
     public class ConsoleGame
     {
@@ -52,11 +54,6 @@
                 Console.Write($"{enemy.Type}");
                 Console.ResetColor();
                 WriteAt($"Press any key to attack (or [R]un if you are scared)", 0, 7);
-                for (int i = 0; i < enemy.Ascii.Length; i++)
-                {
-
-                    WriteAt(enemy.Ascii[i], 60, 2 + i);
-                }
                 if (Console.ReadKey(true).Key == ConsoleKey.R)
                     Flee();
                 else
@@ -112,6 +109,11 @@
         public  void Combat(LivingEntity player, Monster monster, bool playerAttacked)
         {
             ClearBelow();
+            for (int i = 0; i < monster.Ascii.Length; i++)
+            {
+
+                WriteAt(monster.Ascii[i], 60, 2 + i);
+            }
             if (playerAttacked)
             {
 
