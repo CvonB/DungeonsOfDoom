@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 
 namespace DungeonsOfDoom
 {
@@ -109,6 +110,7 @@ namespace DungeonsOfDoom
         public  void Combat(LivingEntity player, Monster monster, bool playerAttacked)
         {
             ClearBelow();
+            string name = monster.Name;
             for (int i = 0; i < monster.Ascii.Length; i++)
             {
 
@@ -117,15 +119,15 @@ namespace DungeonsOfDoom
             if (playerAttacked)
             {
 
-                WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.");
+                WriteAt($"You damaged {name} for {player.Attack(monster)} damage.");
                 if (monster.IsAlive)
                 {
-                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 8);
-                    WriteAt($"{monster.Name} damaged you for {monster.Attack(player)} damage.", 0, 9);
+                    WriteAt($"{name} has {monster.Health} health remaining.", 0, 8);
+                    WriteAt($"{name} damaged you for {monster.Attack(player)} damage.", 0, 9);
                 }
                 else
                 {
-                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 8);
+                    WriteAt($"You killed {name}. Grab you loot!", 0, 8);
                     player.Inventory.AddRange(monster.Inventory);
                     player.Inventory.Add(monster);
                     StackItem(player.Inventory);
@@ -133,16 +135,16 @@ namespace DungeonsOfDoom
             }
             else
             {
-                WriteAt($"{monster.Name} moved from the next room and damaged you for {monster.Attack(player)} damage.");
+                WriteAt($"{name} moved from the next room and damaged you for {monster.Attack(player)} damage.");
                 WriteAt($"You damaged {monster.Name} for {player.Attack(monster)} damage.",0,8);
 
                 if (monster.IsAlive)
                 {
-                    WriteAt($"{monster.Name} has {monster.Health} health remaining.", 0, 9);
+                    WriteAt($"{name} has {monster.Health} health remaining.", 0, 9);
                 }
                 else
                 {
-                    WriteAt($"You killed {monster.Name}. Grab you loot!", 0, 9);
+                    WriteAt($"You killed {name}. Grab you loot!", 0, 9);
                     player.Inventory.AddRange(monster.Inventory);
                     player.Inventory.Add(monster);
                     StackItem(player.Inventory);
